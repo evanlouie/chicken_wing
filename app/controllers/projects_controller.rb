@@ -38,17 +38,27 @@ class ProjectsController < ApplicationController
     
     # Sort by date; oldest -> newest
     walker.sorting(Rugged::SORT_DATE | Rugged::SORT_REVERSE)
-    # walker.sorting(Rugged::SORT_DATE)
 
     # Reference head to point to correct branch
     walker.push(repo.head.target)
 
+    revisions = []
+
     walker.each do |c|
-      t_dir = "public/project_revisions/#{project_params[:name]}/#{c.time}"
+      t_dir = "public/project_revisions/#{project_params[:name]}/#{c.oid}"
       FileUtils.mkdir_p(t_dir)
       FileUtils.cp_r(dir+"/.", t_dir)
       t_repo = Rugged::Repository.new(t_dir)
       t_repo.reset(t_repo.rev_parse_oid(c.oid), :hard)
+      rev = Revision.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid})
+      rev.save
+      revisions << rev
+
+      Dir.glob(t_dir+"/**/*") do |file|
+        if File.file?(file)
+          Item.new({name: file, content: File.open(file).read, revision: rev}).save
+        end
+      end
     end
     walker.reset
     puts "****************************************************************"
@@ -58,9 +68,11 @@ class ProjectsController < ApplicationController
     #   puts file
     # end
     @project = Project.new(project_params)
+    @project.dir = "public/project_revisions/#{project_params[:name]}"
 
     respond_to do |format|
       if @project.save
+        revisions.each { |r| r.update({project_id: @project.id}) }
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else

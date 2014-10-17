@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017213437) do
+ActiveRecord::Schema.define(version: 20141017221751) do
 
   create_table "items", force: true do |t|
     t.string   "name"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20141017213437) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "dir"
   end
 
   create_table "revisions", force: true do |t|
@@ -35,6 +36,8 @@ ActiveRecord::Schema.define(version: 20141017213437) do
     t.string   "commit_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "epoch_time"
+    t.string   "time"
   end
 
   add_index "revisions", ["project_id"], name: "index_revisions_on_project_id"
