@@ -1,3 +1,3 @@
 class Item < ActiveRecord::Base
-  belongs_to :folder
+  belongs_to :revision
 end

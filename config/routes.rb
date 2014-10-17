@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  resources :revisions
-
-  resources :folders
-
   resources :items
+
+  resources :revisions
 
   resources :projects
 

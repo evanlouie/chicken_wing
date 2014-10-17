@@ -1,11 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Folder:</strong>
-  <%= @item.folder %>
-</p>
-
-<p>
   <strong>Name:</strong>
   <%= @item.name %>
 </p>
@@ -13,6 +8,11 @@
 <p>
   <strong>Content:</strong>
   <%= @item.content %>
+</p>
+
+<p>
+  <strong>Revision:</strong>
+  <%= @item.revision %>
 </p>
 
 <%= link_to 'Edit', edit_item_path(@item) %> |

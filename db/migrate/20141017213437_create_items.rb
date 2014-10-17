@@ -1,9 +1,9 @@
 class CreateItems < ActiveRecord::Migration
   def change
     create_table :items do |t|
-      t.references :folder, index: true
       t.string :name
       t.text :content
+      t.references :revision, index: true
 
       t.timestamps
     end
