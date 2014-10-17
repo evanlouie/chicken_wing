@@ -17,3 +17,6 @@
 
 */*.DS_Store
 .idea
+
+/public/projects
+/public/project_revisions
