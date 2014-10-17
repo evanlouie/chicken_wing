@@ -11,26 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141016221435) do
-
-  create_table "folders", force: true do |t|
-    t.integer  "revision_id"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "folders", ["revision_id"], name: "index_folders_on_revision_id"
+ActiveRecord::Schema.define(version: 20141017213437) do
 
   create_table "items", force: true do |t|
-    t.integer  "folder_id"
     t.string   "name"
     t.text     "content"
+    t.integer  "revision_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "items", ["folder_id"], name: "index_items_on_folder_id"
+  add_index "items", ["revision_id"], name: "index_items_on_revision_id"
 
   create_table "projects", force: true do |t|
     t.string   "git"
