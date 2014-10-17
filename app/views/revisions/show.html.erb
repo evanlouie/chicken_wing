@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @revision.project %>
+</p>
+
+<p>
+  <strong>Commit:</strong>
+  <%= @revision.commit_id %>
+</p>
+
+<%= link_to 'Edit', edit_revision_path(@revision) %> |
+<%= link_to 'Back', revisions_path %>
