@@ -6,6 +6,7 @@
       <th>Git</th>
       <th>Name</th>
       <th>Dir</th>
+      <th>Revs</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,6 +17,13 @@
         <td><%= project.git %></td>
         <td><%= project.name %></td>
         <td><%= project.dir %></td>
+        <td>
+          <ul>
+        <% project.revisions.each do |rev| %>
+            <li><%= link_to rev.commit_id, rev %></li>
+        <% end %>
+          </ul>
+        </td>
         <td><%= link_to 'Show', project %></td>
         <td><%= link_to 'Edit', edit_project_path(project) %></td>
         <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>

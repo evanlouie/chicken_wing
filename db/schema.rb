@@ -11,33 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017221751) do
+ActiveRecord::Schema.define(version: 20141019214948) do
 
   create_table "items", force: true do |t|
-    t.string   "name"
-    t.text     "content"
-    t.integer  "revision_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "name"
+    t.text    "content"
+    t.integer "revision_id"
+    t.integer "line_count"
+    t.integer "smell_count"
   end
 
   add_index "items", ["revision_id"], name: "index_items_on_revision_id"
 
   create_table "projects", force: true do |t|
-    t.string   "git"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "dir"
+    t.string "git"
+    t.string "name"
+    t.string "dir"
   end
 
   create_table "revisions", force: true do |t|
-    t.integer  "project_id"
-    t.string   "commit_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "epoch_time"
-    t.string   "time"
+    t.integer "project_id"
+    t.string  "commit_id"
+    t.integer "epoch_time"
+    t.string  "time"
   end
 
   add_index "revisions", ["project_id"], name: "index_revisions_on_project_id"

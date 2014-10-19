@@ -2,7 +2,7 @@
 
 <p>
   <strong>Project:</strong>
-  <%= @revision.project %>
+  <%= link_to @revision.project.name, @revision.project %>
 </p>
 
 <p>
@@ -10,5 +10,11 @@
   <%= @revision.commit_id %>
 </p>
 
+<h3>Files</h3>
+<ul>
+<% @revision.items.each do |item| %>
+<li><%= link_to item.name.sub(/^(public\/project_revisions)/, ''), "/"+item.name.sub(/^(public\/)/, '') %></li>
+<% end %>
+</ul>
 <%= link_to 'Edit', edit_revision_path(@revision) %> |
 <%= link_to 'Back', revisions_path %>
