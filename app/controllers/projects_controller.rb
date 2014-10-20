@@ -33,7 +33,6 @@ class ProjectsController < ApplicationController
               }
             end
         }
-        # render json: JSON.pretty_generate(JSON.parse(@project.to_json(include: [revisions: {include: :items}])))
         render json: JSON.pretty_generate(project)
       end
     end
@@ -64,16 +63,12 @@ class ProjectsController < ApplicationController
     walker.sorting(Rugged::SORT_DATE | Rugged::SORT_REVERSE)    # Sort by date; oldest -> newest
     walker.push(repo.head.target)    # Reference head to point to correct branch
 
-    revisions = []
-
-    count = 0
     walker.each do |c|
       t_dir = "public/project_revisions/#{@project.id}/#{c.oid}"
       FileUtils.mkdir_p(t_dir)
       FileUtils.cp_r(Dir.glob(dir+"/**"), t_dir) # Use Dir.glob so we don't copy the .git folder
-      puts count += 1
+      puts "Rubocop scanning commit: #{c.oid}"
       rev = @project.revisions.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid, dir: t_dir, smells: Hash[JSON.parse(%x{rubocop --format json #{t_dir}})["files"].collect { |file| [ file["path"], file["offenses"].length ]}]})
-      # smells = %x{rubocop #{t_dir}}
       Dir.glob(t_dir+"/**/*") do |file|
         if File.file?(file)
           count = %x{sed -n '=' #{file} | wc -l}.to_i # System call for line count -> much faster than ruby
@@ -88,7 +83,6 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        revisions.each { |r| r.update({project_id: @project.id}) }
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else
