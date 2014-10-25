@@ -1,0 +1,699 @@
+{
+  "git": "https://github.com/chipotle/ljpost.git",
+  "name": "ljpos",
+  "revisions": [
+    {
+      "commit_id": "b59928236dc4521dc40f48e6d077631a10a3ca53",
+      "epoch_time": 1333843042,
+      "human_time": "2012-04-07 23:57:22 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 367
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 367
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 601
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 601
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/LICENSE",
+          "line_count": 26,
+          "smell_count": 858
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/LICENSE",
+          "line_count": 26,
+          "smell_count": 858
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/ljclient.gemspec",
+          "line_count": 13,
+          "smell_count": 594
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/ljclient.gemspec",
+          "line_count": 13,
+          "smell_count": 594
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/Rakefile",
+          "line_count": 8,
+          "smell_count": 181
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/Rakefile",
+          "line_count": 8,
+          "smell_count": 181
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/README.md",
+          "line_count": 86,
+          "smell_count": 923
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/README.md",
+          "line_count": 86,
+          "smell_count": 923
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 18
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 18
+        }
+      ]
+    },
+    {
+      "commit_id": "1351db911912ef5607fa91eb106975c589cf4c6e",
+      "epoch_time": 1341437509,
+      "human_time": "2012-07-04 21:31:49 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/bin/ljpost",
+          "line_count": 117,
+          "smell_count": 947
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/bin/ljpost",
+          "line_count": 117,
+          "smell_count": 947
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 252
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 252
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/LICENSE",
+          "line_count": 26,
+          "smell_count": 897
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/LICENSE",
+          "line_count": 26,
+          "smell_count": 897
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 463
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 463
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/Rakefile",
+          "line_count": 8,
+          "smell_count": 873
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/Rakefile",
+          "line_count": 8,
+          "smell_count": 873
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/README.md",
+          "line_count": 86,
+          "smell_count": 556
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/README.md",
+          "line_count": 86,
+          "smell_count": 556
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 236
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/1351db911912ef5607fa91eb106975c589cf4c6e/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 236
+        }
+      ]
+    },
+    {
+      "commit_id": "73a16df5eeb3a034fdd4326951bf6d7841bb7d20",
+      "epoch_time": 1341437560,
+      "human_time": "2012-07-04 21:32:40 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/bin/ljpost",
+          "line_count": 120,
+          "smell_count": 436
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/bin/ljpost",
+          "line_count": 120,
+          "smell_count": 436
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 265
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 265
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/LICENSE",
+          "line_count": 26,
+          "smell_count": 141
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/LICENSE",
+          "line_count": 26,
+          "smell_count": 141
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 621
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 621
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/Rakefile",
+          "line_count": 8,
+          "smell_count": 100
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/Rakefile",
+          "line_count": 8,
+          "smell_count": 100
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/README.md",
+          "line_count": 86,
+          "smell_count": 807
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/README.md",
+          "line_count": 86,
+          "smell_count": 807
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 826
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/73a16df5eeb3a034fdd4326951bf6d7841bb7d20/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 826
+        }
+      ]
+    },
+    {
+      "commit_id": "f4337effc01a7d6b13b2fb103bc0810463b954ae",
+      "epoch_time": 1341437582,
+      "human_time": "2012-07-04 21:33:02 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/bin/ljpost",
+          "line_count": 119,
+          "smell_count": 476
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/bin/ljpost",
+          "line_count": 119,
+          "smell_count": 476
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 936
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 936
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/LICENSE",
+          "line_count": 26,
+          "smell_count": 604
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/LICENSE",
+          "line_count": 26,
+          "smell_count": 604
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 225
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 225
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/Rakefile",
+          "line_count": 8,
+          "smell_count": 446
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/Rakefile",
+          "line_count": 8,
+          "smell_count": 446
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/README.md",
+          "line_count": 86,
+          "smell_count": 307
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/README.md",
+          "line_count": 86,
+          "smell_count": 307
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 300
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/f4337effc01a7d6b13b2fb103bc0810463b954ae/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 300
+        }
+      ]
+    },
+    {
+      "commit_id": "2f8baab04b6520c384bb78881a16884a7e4e891d",
+      "epoch_time": 1341437607,
+      "human_time": "2012-07-04 21:33:27 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 288
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 288
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 635
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 635
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/LICENSE",
+          "line_count": 26,
+          "smell_count": 997
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/LICENSE",
+          "line_count": 26,
+          "smell_count": 997
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 930
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/ljclient.gemspec",
+          "line_count": 11,
+          "smell_count": 930
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/Rakefile",
+          "line_count": 8,
+          "smell_count": 689
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/Rakefile",
+          "line_count": 8,
+          "smell_count": 689
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/README.md",
+          "line_count": 86,
+          "smell_count": 41
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/README.md",
+          "line_count": 86,
+          "smell_count": 41
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 236
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/2f8baab04b6520c384bb78881a16884a7e4e891d/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 236
+        }
+      ]
+    },
+    {
+      "commit_id": "771fd82e89373fb0c80c78bca33af7da8045f2ff",
+      "epoch_time": 1351142693,
+      "human_time": "2012-10-25 05:24:53 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 501
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 501
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 673
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 673
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/LICENSE",
+          "line_count": 26,
+          "smell_count": 892
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/LICENSE",
+          "line_count": 26,
+          "smell_count": 892
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/ljclient.gemspec",
+          "line_count": 12,
+          "smell_count": 6
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/ljclient.gemspec",
+          "line_count": 12,
+          "smell_count": 6
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/Rakefile",
+          "line_count": 8,
+          "smell_count": 991
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/Rakefile",
+          "line_count": 8,
+          "smell_count": 991
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/README.md",
+          "line_count": 86,
+          "smell_count": 953
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/README.md",
+          "line_count": 86,
+          "smell_count": 953
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 440
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/771fd82e89373fb0c80c78bca33af7da8045f2ff/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 440
+        }
+      ]
+    },
+    {
+      "commit_id": "fefb7bacc999264dbe44f1d9746efb2aba63114b",
+      "epoch_time": 1356576652,
+      "human_time": "2012-12-27 02:50:52 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 472
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 472
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 154
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 154
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/LICENSE",
+          "line_count": 26,
+          "smell_count": 532
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/LICENSE",
+          "line_count": 26,
+          "smell_count": 532
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/ljclient.gemspec",
+          "line_count": 12,
+          "smell_count": 921
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/ljclient.gemspec",
+          "line_count": 12,
+          "smell_count": 921
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/Rakefile",
+          "line_count": 8,
+          "smell_count": 444
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/Rakefile",
+          "line_count": 8,
+          "smell_count": 444
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/README.md",
+          "line_count": 86,
+          "smell_count": 706
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/README.md",
+          "line_count": 86,
+          "smell_count": 706
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 494
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/fefb7bacc999264dbe44f1d9746efb2aba63114b/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 494
+        }
+      ]
+    },
+    {
+      "commit_id": "0873a2b6608b5881adbd600e563f3acd2836d757",
+      "epoch_time": 1361161509,
+      "human_time": "2013-02-18 04:25:09 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 779
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 779
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 298
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 298
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/LICENSE",
+          "line_count": 26,
+          "smell_count": 956
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/LICENSE",
+          "line_count": 26,
+          "smell_count": 956
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/ljclient.gemspec",
+          "line_count": 13,
+          "smell_count": 999
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/ljclient.gemspec",
+          "line_count": 13,
+          "smell_count": 999
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/Rakefile",
+          "line_count": 8,
+          "smell_count": 82
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/Rakefile",
+          "line_count": 8,
+          "smell_count": 82
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/README.md",
+          "line_count": 86,
+          "smell_count": 551
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/README.md",
+          "line_count": 86,
+          "smell_count": 551
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 945
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/0873a2b6608b5881adbd600e563f3acd2836d757/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 945
+        }
+      ]
+    },
+    {
+      "commit_id": "47af74c8012ef5cc650fa216b48c9870b3c99c17",
+      "epoch_time": 1361163236,
+      "human_time": "2013-02-18 04:53:56 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 405
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/bin/ljpost",
+          "line_count": 122,
+          "smell_count": 405
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 334
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/lib/ljclient.rb",
+          "line_count": 379,
+          "smell_count": 334
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/LICENSE",
+          "line_count": 26,
+          "smell_count": 85
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/LICENSE",
+          "line_count": 26,
+          "smell_count": 85
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/ljclient.gemspec",
+          "line_count": 13,
+          "smell_count": 250
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/ljclient.gemspec",
+          "line_count": 13,
+          "smell_count": 250
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/Rakefile",
+          "line_count": 8,
+          "smell_count": 818
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/Rakefile",
+          "line_count": 8,
+          "smell_count": 818
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/README.md",
+          "line_count": 86,
+          "smell_count": 532
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/README.md",
+          "line_count": 86,
+          "smell_count": 532
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 460
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/47af74c8012ef5cc650fa216b48c9870b3c99c17/test/test_ljclient.rb",
+          "line_count": 31,
+          "smell_count": 460
+        }
+      ]
+    }
+  ]
+}
