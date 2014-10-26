@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:visualize, :show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
@@ -8,6 +8,26 @@ class ProjectsController < ApplicationController
     @projects = Project.all
   end
 
+  def visualize
+    respond_to do |format|
+      format.html do
+        @project = {
+            git: @project.git,
+            name: @project.name,
+            revisions: @project.revisions.map do |rev|
+              {
+                  commit_id: rev.commit_id,
+                  epoch_time: rev.epoch_time,
+                  human_time: rev.time,
+                  items: rev.items.map { |item| {name: item.name, line_count: item.line_count, smell_count: item.smell_count}}
+              }
+            end
+        }.to_json
+
+        render :visualize, layout: "visualize"
+      end
+    end
+  end
   # GET /projects/1
   # GET /projects/1.json
   def show

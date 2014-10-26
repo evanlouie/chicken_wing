@@ -10,5 +10,11 @@
   <%= @project.name %>
 </p>
 
+<p>
+  <strong>Visualize:</strong>
+  <%= link_to "Visualize", "/visualize/#{@project.id}" %>
+</p>
+
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>
+

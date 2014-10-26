@@ -1,4 +1,4 @@
-// from @mrdoob http://www.mrdoob.com/lab/javascript/webgl/city/01/
+ // from @mrdoob http://www.mrdoob.com/lab/javascript/webgl/city/01/
 
 var THREEx = THREEx || {}
 
@@ -161,7 +161,8 @@ function getTileCoordinatesy(tileNum){
 
 		// establish the base color for the buildingMesh
 		var value	= 1 - Math.random() * Math.random();
-		var baseColor	= new THREE.Color().setRGB( value + Math.random() * 0.1, value, value + Math.random() * 0.1 );
+		var baseColor	= new THREE.Color().setRGB(1, 1-ListOfItems[i].smell_count*1/1000,1-ListOfItems[i].smell_count*1/1000);
+
 		// set topColor/bottom vertexColors as adjustement of baseColor
 		var topColor	= baseColor.clone().multiply( light );
 		var bottomColor	= baseColor.clone().multiply( shadow );
@@ -199,8 +200,6 @@ function getTileCoordinatesy(tileNum){
 		canvas.width	= 10;
 		canvas.height	= 10;
 		var context	= canvas.getContext( '2d' );
-		// plain it in white
-		// TODO: IF BLAHBLAHBLAH # OF WARNINGS, THEN DO FILLSTYLE with DIFFERENT COLOR
 		context.fillStyle	= '#ffffff';
 		context.fillRect( 0, 0, 32, 64 );
 		// draw the window rows - with a small noise to simulate light variations in each room
