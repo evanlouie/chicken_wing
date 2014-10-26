@@ -49,6 +49,7 @@ class Project
       FileUtils.cp_r(Dir.glob(dir+"/**"), t_dir) # Use Dir.glob so we don't copy the .git folder
       puts "Rubocop scanning commit: #{c.oid}"
       rev = self.revisions.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid, dir: t_dir, smells: Hash[JSON.parse(%x{rubocop --format json #{t_dir}})["files"].collect { |file| [ file["path"], file["offenses"].length ]}]})
+      root = Dir.pwd
       Dir.glob(t_dir+"/**/*") do |file|
         if File.file?(file)
           count = %x{sed -n '=' #{file} | wc -l}.to_i # System call for line count -> much faster than ruby
