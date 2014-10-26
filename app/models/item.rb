@@ -1,3 +1,7 @@
-class Item < ActiveRecord::Base
-  belongs_to :revision
+class Item
+  include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
+
+  embedded_in :revision
+
 end

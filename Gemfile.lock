@@ -36,6 +36,7 @@ GEM
     awesome_print (1.2.0)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
+    bson (2.3.0)
     builder (3.2.2)
     cane (2.6.2)
       parallel
@@ -49,6 +50,7 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     colored (1.2)
+    connection_pool (2.0.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.2.2)
@@ -68,7 +70,18 @@ GEM
       mime-types (>= 1.16, < 3)
     mime-types (2.4.2)
     minitest (5.4.2)
+    mongoid (4.0.0)
+      activemodel (~> 4.0)
+      moped (~> 2.0.0)
+      origin (~> 2.1)
+      tzinfo (>= 0.3.37)
+    moped (2.0.1)
+      bson (~> 2.2)
+      connection_pool (~> 2.0)
+      optionable (~> 0.2.0)
     multi_json (1.10.1)
+    optionable (0.2.0)
+    origin (2.1.1)
     parallel (1.3.3)
     parser (2.2.0.pre.5)
       ast (>= 1.1, < 3.0)
@@ -169,6 +182,7 @@ DEPENDENCIES
   grit
   jbuilder (~> 2.0)
   jquery-rails
+  mongoid
   rails (= 4.1.6)
   rails_best_practices
   reek

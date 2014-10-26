@@ -1,9 +1,5 @@
 class ProjectsController < ApplicationController
 
-  require 'rugged'
-  require 'fileutils'
-  include ProjectsHelper
-
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
@@ -26,11 +22,13 @@ class ProjectsController < ApplicationController
                   commit_id: rev.commit_id,
                   epoch_time: rev.epoch_time,
                   human_time: rev.time,
-                  items: rev.items.map { |item| {name: item.name, content: File.open(item.name).read}}
+                  # smells: rev.smells,
+                  # items: rev.items.map { |item| {name: item.name, content: File.open(item.name).read, line_count: item.line_count, smell_count: item.smell_count}}
+                  items: rev.items.map { |item| {name: item.name, line_count: item.line_count, smell_count: item.smell_count}}
+
               }
             end
         }
-        # render json: JSON.pretty_generate(JSON.parse(@project.to_json(include: [revisions: {include: :items}])))
         render json: JSON.pretty_generate(project)
       end
     end
@@ -48,49 +46,10 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    tmp_dir = "public/projects"
-    FileUtils.mkdir_p(tmp_dir)
-    dir = "public/projects/#{project_params[:name]}"
-    repo = Rugged::Repository.clone_at(project_params[:git], dir)
-
-    walker = Rugged::Walker.new(repo)
-    puts "****************************************************************"
-
-    walker.sorting(Rugged::SORT_DATE | Rugged::SORT_REVERSE)    # Sort by date; oldest -> newest
-    walker.push(repo.head.target)    # Reference head to point to correct branch
-
-    revisions = []
-
-    walker.each do |c|
-      t_dir = "public/project_revisions/#{project_params[:name]}/#{c.oid}"
-      FileUtils.mkdir_p(t_dir)
-      FileUtils.cp_r(Dir.glob(dir+"/**"), t_dir) # Use Dir.glob so we don't copy the .git folder
-      rev = Revision.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid})
-      rev.save
-      revisions << rev
-      Dir.glob(t_dir+"/**/*") do |file|
-        if File.file?(file)
-          count = %x{sed -n '=' #{file} | wc -l}.to_i
-          # Item.new({name: file, content: File.open(file).read, revision: rev, line_count: count, smell_count: rand(0..1000)}).save
-          Item.new({name: file, revision: rev, line_count: count, smell_count: rand(0..1000)}).save
-
-        end
-      end
-      repo.reset(c.oid, :hard)
-    end
-    walker.reset
-    puts "****************************************************************"
-    FileUtils.rm_rf(tmp_dir);
-
-    # Dir.glob(dir+"/**/*.rb") do | file |
-    #   puts file
-    # end
     @project = Project.new(project_params)
-    @project.dir = "public/project_revisions/#{project_params[:name]}"
 
     respond_to do |format|
       if @project.save
-        revisions.each { |r| r.update({project_id: @project.id}) }
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
       else

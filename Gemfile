@@ -51,3 +51,5 @@ gem 'reek'
 # Git
 gem 'grit'
 gem 'rugged'
+
+gem 'mongoid'
