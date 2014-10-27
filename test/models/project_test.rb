@@ -22,5 +22,16 @@ class ProjectTest < ActiveSupport::TestCase
   test "name generator" do
     project = Project.new
     project.git="https://github.com/github/markup.git"
+    assert project.save, "name was not automatically generated, name is currently: #{project.name}"
+    project.destroy!
   end
+
+  test "delete project files" do
+    project = Project.new
+    project.git="https://github.com/evanlouie/chicken_wing.git"
+    project.save!
+    project.destroy!
+    assert_not File.directory?(project.dir), "project files still exist after destroy! dir: #{project.dir}"
+  end
+  
 end

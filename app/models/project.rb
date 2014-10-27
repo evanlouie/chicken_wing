@@ -23,7 +23,17 @@ class Project
   require 'fileutils'
 
   def set_name
-    self.name = self.git.match(/(?:.(?!\/))+$/)[0].match(/.*[^\.git]/)[0].match(/[^\/].*/)[0] # Project is named after git repository
+    # self.name = self.git.match(/(?:.(?!\/))+$/)[0].match(/.*[^\.git]/)[0].match(/[^\/].*/)[0] # Project is named after git repository
+
+    unless git.nil?
+      match =git.match(/\w+\.\w+$/)
+      if match.nil?
+        self.name ||= self.git
+      else
+        self.name ||= match[0]
+      end
+    end
+
   end
 
   def set_dir

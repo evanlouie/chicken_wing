@@ -51,6 +51,24 @@ class ProjectsController < ApplicationController
         }
         render json: JSON.pretty_generate(project)
       end
+      format.yaml do
+        project = {
+            git: @project.git,
+            name: @project.name,
+            revisions: @project.revisions.map do |rev|
+              {
+                  commit_id: rev.commit_id,
+                  epoch_time: rev.epoch_time,
+                  human_time: rev.time,
+                  # smells: rev.smells,
+                  # items: rev.items.map { |item| {name: item.name, content: File.open(item.name).read, line_count: item.line_count, smell_count: item.smell_count}}
+                  items: rev.items.map { |item| {name: item.name, line_count: item.line_count, smell_count: item.smell_count}}
+
+              }
+            end
+        }
+        render text: project.to_yaml
+      end
     end
   end
 

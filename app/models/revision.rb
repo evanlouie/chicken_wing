@@ -4,4 +4,5 @@ class Revision
 
   embedded_in :project
   embeds_many :items
+
 end
