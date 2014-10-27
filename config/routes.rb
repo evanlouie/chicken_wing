@@ -2,11 +2,15 @@ Rails.application.routes.draw do
 
   root to: 'projects#index'
 
-  resources :items
+  # resources :items
+  #
+  # resources :revisions
 
-  resources :revisions
-
-  resources :projects
+  resources :projects do
+    resources :revisions do
+      :items
+    end
+  end
   get 'visualize/:id' => 'projects#visualize'
 
   # The priority is based upon order of creation: first created -> highest priority.

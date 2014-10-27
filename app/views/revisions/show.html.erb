@@ -16,5 +16,5 @@
 <li><%= link_to item.name.sub(/^(public\/project_revisions)/, ''), "/"+item.name.sub(/^(public\/)/, '') %></li>
 <% end %>
 </ul>
-<%= link_to 'Edit', edit_revision_path(@revision) %> |
-<%= link_to 'Back', revisions_path %>
+<%= link_to 'Edit', edit_project_revision_path(@project, @revision) %> |
+<%= link_to 'Back', project_revisions_path %>

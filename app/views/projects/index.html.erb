@@ -20,7 +20,7 @@
         <td>
           <ul>
         <% project.revisions.each do |rev| %>
-            <li><%= link_to rev.commit_id, rev %></li>
+            <li><%= link_to rev.commit_id, [project, rev] %></li>
         <% end %>
           </ul>
         </td>

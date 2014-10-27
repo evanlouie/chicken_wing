@@ -33,5 +33,5 @@ class ProjectTest < ActiveSupport::TestCase
     project.destroy!
     assert_not File.directory?(project.dir), "project files still exist after destroy! dir: #{project.dir}"
   end
-  
+
 end
