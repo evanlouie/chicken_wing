@@ -1,28 +1,9 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Testing Procedures
+=========
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Unit Test for Client
+  - Input : JSON file
+  - Output : Visualization of the city based on the JSON file given
+  - Test : Compare the JSON values to the visualized city and check of the number of buildings and colors of the buildings match the number of lines of code and code smell for each file in the JSON file.
