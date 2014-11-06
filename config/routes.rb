@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
+  # The priority is based upon order of creation: first created -> highest priority.
+  # See how all your routes lay out with "rake routes".
+
+  # You can have the root of your site routed with "root"
+  # root 'welcome#index'
 
   root to: 'projects#index'
-
-  # resources :items
-  #
-  # resources :revisions
 
   resources :projects do
     resources :revisions do
@@ -12,12 +13,6 @@ Rails.application.routes.draw do
     end
   end
   get 'visualize/:id' => 'projects#visualize'
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

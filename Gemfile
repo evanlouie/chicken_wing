@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -38,18 +36,6 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'bootstrap-sass'
-# gem 'sass-rails'
-gem 'autoprefixer-rails'
-
-# Code Quality
-gem 'rubocop'
-gem 'rails_best_practices'
-gem 'cane'
-gem 'reek'
-
-# Git
-gem 'grit'
-gem 'rugged'
-
 gem 'mongoid'
+gem 'rugged'
+gem 'rubocop'
