@@ -1,0 +1,83 @@
+{
+  "git": "https://github.com/chipotle/ljpost.git",
+  "name": "ljpos",
+  "revisions": [
+    {
+      "commit_id": "b59928236dc4521dc40f48e6d077631a10a3ca53",
+      "epoch_time": 1333843042,
+      "human_time": "2012-04-07 23:57:22 UTC",
+      "items": [
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/bin/ljpost",
+          "line_count": 10,
+          "smell_count": 367
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/bin/ljpost",
+          "line_count": 10,
+          "smell_count": 367
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/lib/ljclient.rb",
+          "line_count": 100,
+          "smell_count": 601
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/lib/ljclient.rb",
+          "line_count": 10,
+          "smell_count": 601
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/LICENSE",
+          "line_count": 10,
+          "smell_count": 858
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/LICENSE",
+          "line_count": 10,
+          "smell_count": 858
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/ljclient.gemspec",
+          "line_count": 10,
+          "smell_count": 594
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/ljclient.gemspec",
+          "line_count": 10,
+          "smell_count": 594
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/Rakefile",
+          "line_count": 10,
+          "smell_count": 181
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/Rakefile",
+          "line_count": 10,
+          "smell_count": 181
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/README.md",
+          "line_count": 10,
+          "smell_count": 923
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/README.md",
+          "line_count": 10,
+          "smell_count": 923
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/test/test_ljclient.rb",
+          "line_count": 10,
+          "smell_count": 18
+        },
+        {
+          "name": "public/project_revisions/5444534d616c74c5bb620900/b59928236dc4521dc40f48e6d077631a10a3ca53/test/test_ljclient.rb",
+          "line_count": 10,
+          "smell_count": 18
+        }
+      ]
+    }
+]
+}
