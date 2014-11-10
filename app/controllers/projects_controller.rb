@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
                   commit_id: rev.commit_id,
                   epoch_time: rev.epoch_time,
                   human_time: rev.time,
-                  items: rev.items.map { |item| {name: item.name, line_count: item.line_count, smell_count: item.smell_count}}
+                  items: rev.items.map { |item| {name: item.name, trackable_name: item.trackable_name, line_count: item.line_count, smell_count: item.smell_count}}
               }
             end
         }.to_json
