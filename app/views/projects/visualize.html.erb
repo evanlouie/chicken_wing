@@ -61,18 +61,18 @@
     // scCube.format = THREE.RGBFormat;
 
     // prepare skybox material (shader)
-    var skyShader = THREE.ShaderLib["cube"];
-    skyShader.uniforms["tCube"].value = scCube;
-    var skyMaterial = new THREE.ShaderMaterial( {
-      fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
-      uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
-    });
+    // var skyShader = THREE.ShaderLib["cube"];
+    // skyShader.uniforms["tCube"].value = scCube;
+    // var skyMaterial = new THREE.ShaderMaterial( {
+    //   fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
+    //   uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
+    // });
 
-    // create Mesh with cube geometry and add to the scene
-    var skyBox = new THREE.Mesh(new THREE.CubeGeometry(2000, 2000, 2000), skyMaterial);
-    skyMaterial.needsUpdate = true;
-    skyBox.position.y +=800;
-    scene.add(skyBox);
+    // // create Mesh with cube geometry and add to the scene
+    // var skyBox = new THREE.Mesh(new THREE.CubeGeometry(2000, 2000, 2000), skyMaterial);
+    // skyMaterial.needsUpdate = true;
+    // skyBox.position.y +=800;
+    // scene.add(skyBox);
 
 
 
