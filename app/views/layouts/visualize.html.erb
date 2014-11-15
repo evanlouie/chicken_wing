@@ -95,7 +95,6 @@
     camera.position.z = 0
     camera.setLens (20, 30)
 
-
     var light	= new THREE.HemisphereLight( 0xfffff0, 0x101020, 1.25 );
     light.position.set( 0.75, 1, 0.25 );
     scene.add( light );
@@ -483,7 +482,6 @@
 
     function onKeyDown ( event ) {
         if(event.keyCode==67) {
-
           if(camera.inOrthographicMode){
             camera.toPerspective();
           }
