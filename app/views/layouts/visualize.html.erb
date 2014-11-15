@@ -447,6 +447,9 @@
           }
           else{
             camera.toOrthographic();
+            controls = new THREE.OrbitControls( camera );
+            controls.damping = 0.2;
+            controls.addEventListener( 'change', render );
           }
 
           camera.position.y = 0;
