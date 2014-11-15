@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<script src='/js/three/three.min.js'></script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>-->
+<!-- <script src='/js/three/three.min.js'></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
 
 <script src='/js/three/FirstPersonControls.js'></script>
 <!--<script src='threex.dynamictexture.js'></script>-->
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <style type="text/css">
     body {
@@ -117,7 +117,7 @@
     });
 
     // create Mesh with cube geometry and add to the scene
-    var skyBox = new THREE.Mesh(new THREE.CubeGeometry(2000, 2000, 2000), skyMaterial);
+    var skyBox = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000), skyMaterial);
     skyMaterial.needsUpdate = true;
     skyBox.position.y +=800;
     scene.add(skyBox);
@@ -151,20 +151,9 @@
     var revisionID = 0;
     var buildingNUM = 0; // <--- used to make sure that new buildings do not overlap old building positions!
 
-    var building = new THREE.CubeGeometry( 1, 1, 1);
+    var building = new THREE.BoxGeometry( 1, 1, 1);
     building.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
-    // get rid of the bottom face - it is never seen
-    building.faces.splice( 3, 1 );
-    building.faceVertexUvs[0].splice( 3, 1 );
-    // change UVs for the top face
-    // - it is the roof so it wont use the same texture as the side of the building
-    // - set the UVs to the single coordinate 0,0. so the roof will be the same color
-    //   as a floor row.
-    building.faceVertexUvs[0][2][0].set( 0, 0 );
-    building.faceVertexUvs[0][2][1].set( 0, 0 );
-    building.faceVertexUvs[0][2][2].set( 0, 0 );
-    building.faceVertexUvs[0][2][3].set( 0, 0 );
-    // buildMesh
+
 
     // base colors for vertexColors. light is for vertices at the top, shaddow is for the ones at the bottom
     var light	= new THREE.Color( 0xffffff )
@@ -221,39 +210,24 @@
         // then draw the image
         context.drawImage( canvas, 0, 0, canvas2.width, canvas2.height );
         // return the just built canvas2
-        //canvas2.add(ground);
         return canvas2;
     }
 
 
-
-    //var material = new THREE.MeshBasicMaterial({ color: 0x0000FF });
-    //var buildingMesh = new THREE.Mesh(building,material);
-    /*var cubeMaterials = [
-     new THREE.MeshBasicMaterial({color:0x33AA55, transparent:true, opacity:0.8}),
-     new THREE.MeshBasicMaterial({color:0x55CC00, transparent:true, opacity:0.8}),
-     new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.8}),
-     new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.8}),
-     new THREE.MeshBasicMaterial({color:0x0000FF, transparent:true, opacity:0.8}),
-     new THREE.MeshBasicMaterial({color:0x5555AA, transparent:true, opacity:0.8}),
-     ];
-     var material = new THREE.MeshFaceMaterial(cubeMaterials);
-     */
-
     var createBuilding = function (y,color) {
-        var building = new THREE.CubeGeometry( 1, 1, 1);
+        var building = new THREE.BoxGeometry( 1, 1, 1);
+        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
+        texture.anisotropy = renderer.getMaxAnisotropy();
+                var baseColor   = new THREE.Color().setRGB(1, color, color);
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor } );
+        mesh = new THREE.Mesh( building, material );
+
+
         building.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
-        // get rid of the bottom face - it is never seen
-        building.faces.splice( 3, 1 );
-        building.faceVertexUvs[0].splice( 3, 1 );
-        // change UVs for the top face
-        // - it is the roof so it wont use the same texture as the side of the building
-        // - set the UVs to the single coordinate 0,0. so the roof will be the same color
-        //   as a floor row.
-        building.faceVertexUvs[0][2][0].set( 0, 0 );
-        building.faceVertexUvs[0][2][1].set( 0, 0 );
-        building.faceVertexUvs[0][2][2].set( 0, 0 );
-        building.faceVertexUvs[0][2][3].set( 0, 0 );
+
 
 
         var buildingMesh = new THREE.Mesh(building,material);
@@ -286,19 +260,8 @@
     }
 
     var createBillboard = function(y) {
-        var billboard = new THREE.CubeGeometry(1,1,1);
+        var billboard = new THREE.BoxGeometry(1,1,1);
         billboard.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
-        // get rid of the bottom face - it is never seen
-        billboard.faces.splice( 3, 1 );
-        billboard.faceVertexUvs[0].splice( 3, 1 );
-        // change UVs for the top face
-        // - it is the roof so it wont use the same texture as the side of the billboard
-        // - set the UVs to the single coordinate 0,0. so the roof will be the same color
-        //   as a floor row.
-        billboard.faceVertexUvs[0][2][0].set( 0, 0 );
-        billboard.faceVertexUvs[0][2][1].set( 0, 0 );
-        billboard.faceVertexUvs[0][2][2].set( 0, 0 );
-        billboard.faceVertexUvs[0][2][3].set( 0, 0 );
 
 
         var billboardMesh = new THREE.Mesh(billboard,material);
@@ -438,10 +401,7 @@
                             // set face.vertexColors on root face
                             ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
                             ListOfBuildings[key].geometry.colorsNeedUpdate = true;
-                            // by creating a material at each render makes view super laggy
-                            //ListOfBuildings[key].material.map = createTexture_window(Math.floor(buildingDifference[key].lc/10));
-                            //ListOfBuildings[key].material.map.repeat.set(1,Math.floor(ListOfBuildings[key].scale.y/10))
-                            //ListOfBuildings[key].material.needsUpdate = true;
+
                         } else {
                             // set face.vertexColors on sides faces
                             ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
