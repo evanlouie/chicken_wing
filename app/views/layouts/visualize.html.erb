@@ -6,6 +6,9 @@
 <script src='/js/three/FirstPersonControls.js'></script>
 <!--<script src='threex.dynamictexture.js'></script>-->
 
+<script src='/js/three/CombinedCamera.js'></script>
+
+
 
 <style type="text/css">
     body {
@@ -83,13 +86,14 @@
     var updateFcts	= [];
     var scene = new THREE.Scene(); // Create a Three.js scene object.
     //scene.fog	= new THREE.FogExp2( 0xd0e0f0, 0.001);
-    var camera	= new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.01, 3000) // Define the perspective camera's attributes.
+    var camera = new THREE.CombinedCamera( window.innerWidth / 2, window.innerHeight / 2, 70, 1, 1000, - 500, 1000 );
     var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer(); // Fallback to canvas renderer, if necessary.
     renderer.setSize(window.innerWidth, window.innerHeight); // Set the size of the WebGL viewport.
     document.body.appendChild(renderer.domElement); // Append the WebGL viewport to the DOM.
     camera.position.y = 100
     camera.position.x = -500
     camera.position.z = 0
+    camera.setLens (20, 30)
 
 
     var light	= new THREE.HemisphereLight( 0xfffff0, 0x101020, 1.25 );
@@ -316,6 +320,8 @@
 
     var initialize = function () {
         // INITIALIZE THE CITY!!
+        document.addEventListener( 'keydown', onKeyDown, false );
+
         for( var i = 0; i < BIGArray[revisionID].length; i++ ){
             var y = BIGArray[revisionID][i].line_count;
             var color=0;
@@ -474,6 +480,22 @@
             ListOfBillboards[key].lookAt(camera.position);
         })
     })
+
+    function onKeyDown ( event ) {
+        if(event.keyCode==67) {
+
+          if(camera.inOrthographicMode){
+            camera.toPerspective();
+          }
+          else{
+            camera.toOrthographic();
+          }
+
+          camera.position.y = 0;
+          camera.position.x = 0;
+          camera.position.z = 0;
+        }
+    };
 
 </script>
 </body>
