@@ -469,6 +469,10 @@
         updateFcts.forEach(function(updateFn){
             updateFn(deltaMsec/1000, nowMsec/1000)
         })
+        //Make each Billboard face the camera
+        Object.keys(ListOfBillboards).forEach(function(key){
+            ListOfBillboards[key].lookAt(camera.position);
+        })
     })
 
 </script>
