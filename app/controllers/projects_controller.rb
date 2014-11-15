@@ -14,12 +14,14 @@ class ProjectsController < ApplicationController
         @project = {
             git: @project.git,
             name: @project.name,
+            largest_file_count: @project.largest_revision_file_count,
             revisions: @project.revisions.map do |rev|
               {
                   commit_id: rev.commit_id,
                   epoch_time: rev.epoch_time,
                   human_time: rev.time,
-                  items: rev.items.map { |item| {name: item.name, trackable_name: item.trackable_name, line_count: item.line_count, smell_count: item.smell_count}}
+                  file_count: rev.file_count,
+                  items: rev.items.map { |item| {name: item.name, trackable_name: item.trackable_name, line_count: item.line_count, smell_count: item.smell_count} }
               }
             end
         }.to_json
@@ -28,6 +30,7 @@ class ProjectsController < ApplicationController
       end
     end
   end
+
   # GET /projects/1
   # GET /projects/1.json
   def show
@@ -37,15 +40,14 @@ class ProjectsController < ApplicationController
         project = {
             git: @project.git,
             name: @project.name,
+            largest_file_count: @project.largest_revision_file_count,
             revisions: @project.revisions.map do |rev|
               {
                   commit_id: rev.commit_id,
                   epoch_time: rev.epoch_time,
                   human_time: rev.time,
-                  # smells: rev.smells,
-                  # items: rev.items.map { |item| {name: item.name, content: File.open(item.name).read, line_count: item.line_count, smell_count: item.smell_count}}
-                  items: rev.items.map { |item| {name: item.name, trackable_name: item.trackable_name, line_count: item.line_count, smell_count: item.smell_count}}
-
+                  file_count: rev.file_count,
+                  items: rev.items.map { |item| {name: item.name, trackable_name: item.trackable_name, line_count: item.line_count, smell_count: item.smell_count} }
               }
             end
         }
@@ -55,15 +57,14 @@ class ProjectsController < ApplicationController
         project = {
             git: @project.git,
             name: @project.name,
+            largest_file_count: @project.largest_revision_file_count,
             revisions: @project.revisions.map do |rev|
               {
                   commit_id: rev.commit_id,
                   epoch_time: rev.epoch_time,
                   human_time: rev.time,
-                  # smells: rev.smells,
-                  # items: rev.items.map { |item| {name: item.name, content: File.open(item.name).read, line_count: item.line_count, smell_count: item.smell_count}}
-                  items: rev.items.map { |item| {name: item.name, line_count: item.line_count, smell_count: item.smell_count}}
-
+                  file_count: rev.file_count,
+                  items: rev.items.map { |item| {name: item.name, line_count: item.line_count, smell_count: item.smell_count} }
               }
             end
         }

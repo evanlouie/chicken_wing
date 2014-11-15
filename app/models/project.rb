@@ -8,6 +8,7 @@ class Project
   field :git
   field :name
   field :dir
+  field :largest_revision_file_count
 
   validates :git, presence: true
   validates :name, presence: true
@@ -67,7 +68,7 @@ class Project
         # smells = with_captured_stdout { RuboCop::CLI.new.run(["--format", "json", "--output", file_loc, t_dir]) }
         RuboCop::CLI.new.run(["--format", "json", "--out", file_loc, t_dir])
         json = JSON.parse(IO.read(file_loc))
-        rev = self.revisions.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid, dir: t_dir, smells: Hash[json["files"].collect { |file| [file["path"], file["offenses"].length] }]})
+        rev = self.revisions.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid, dir: t_dir, smells: Hash[json["files"].collect { |file| [file["path"], file["offenses"].length]}], file_count: Dir[File.join(t_dir, '**', '*')].count { |file| File.file?(file) }})
 
         root = Dir.pwd
         Dir.glob(t_dir+"/**/*") do |file|
@@ -81,6 +82,7 @@ class Project
     end
     walker.reset
     threads.each { |thr| thr.join }
+    self.largest_revision_file_count = self.revisions.map{ |r| r.file_count }.sort.last
     FileUtils.rm_rf(tmp_dir)
   end
 
