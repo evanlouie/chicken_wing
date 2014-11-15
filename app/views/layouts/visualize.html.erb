@@ -6,6 +6,9 @@
 <script src='/js/three/FirstPersonControls.js'></script>
 <!--<script src='threex.dynamictexture.js'></script>-->
 
+<script src='/js/three/CombinedCamera.js'></script>
+
+
 
 <style type="text/css">
     body {
@@ -90,6 +93,7 @@
     camera.position.y = 100
     camera.position.x = -500
     camera.position.z = 0
+    camera.setLens (24, 35)
 
 
     var light	= new THREE.HemisphereLight( 0xfffff0, 0x101020, 1.25 );
@@ -316,6 +320,8 @@
 
     var initialize = function () {
         // INITIALIZE THE CITY!!
+        document.addEventListener( 'keydown', onKeyDown, false );
+
         for( var i = 0; i < BIGArray[revisionID].length; i++ ){
             var y = BIGArray[revisionID][i].line_count;
             var color=0;
@@ -474,6 +480,24 @@
             ListOfBillboards[key].lookAt(camera.position);
         })
     })
+
+    function onKeyDown ( event ) {
+        if(event.keyCode==67) {
+            
+          if(camera.inOrthographicMode){
+            camera.toPerspective();
+            controls = fpcontrols;
+          }
+          else{
+            camera.toOrthographic();
+            controls = obcontrols;
+          }
+
+          camera.position.y = 0;
+          camera.position.x = 0;
+          camera.position.z = 0;
+        }
+    };
 
 </script>
 </body>
