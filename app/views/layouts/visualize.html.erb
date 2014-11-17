@@ -677,6 +677,45 @@
         }
     }
 
+    var create_terrain = function(x,z){
+            var terrain_data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 40738, 40369, 39483, 37175, 34492, 32436, 31600, 33473, 0,
+                                0, 38613, 39605, 40451, 39655, 38843, 38843, 38857, 39042, 0,
+                                0, 40738, 33487, 39483, 37175, 34492, 32436, 31600, 33473, 0,
+                                0, 38613, 39605, 40451, 39655, 38843, 38843, 38857, 39042, 0,
+                                0, 40738, 40369, 39483, 37175, 44753, 32436, 31600, 33473, 0,
+                                0, 38613, 39605, 40451, 39655, 38843, 38843, 38857, 39042, 0,
+                                0, 40738, 40369, 39483, 37175, 34492, 32436, 31600, 30000, 0,
+                                0, 38613, 39605, 40451, 39655, 38843, 38843, 38857, 39042, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0] // 100 items inside
+            
+            var terrain_geo = new THREE.PlaneGeometry(20, 20, 9, 9);
+            
+            for (var i = 0, l = terrain_geo.vertices.length; i < l; i++) {
+                terrain_geo.vertices[i].z = terrain_data[i] *Math.random() / 65535 * 10 ;
+            }
+            
+            var terrain_texture   = THREE.ImageUtils.loadTexture('images/rubble1.jpg');
+            //texture_new.wrapS = THREE.RepeatWrapping;
+            //texture_new.wrapT = THREE.RepeatWrapping;
+            //texture_new.repeat.set( 1, y_stack );
+            //texture_new.needsUpdate = true;
+            
+            var terrain_material = new THREE.MeshPhongMaterial({
+                                                               map: terrain_texture,
+                                                               color: 0xdddddd,
+                                                               wireframe: false
+                                                               });
+            
+            var terrain_plane = new THREE.Mesh(terrain_geo, terrain_material);
+            terrain_plane.position.y += -200
+            terrain_plane.position.x = x
+            terrain_plane.position.z = z
+            terrain_plane.rotation.x -= 90*Math.PI/180
+            //scene.add(terrain_plane);
+            return terrain_plane;
+        }
+
 </script>
 </body>
 </html>
