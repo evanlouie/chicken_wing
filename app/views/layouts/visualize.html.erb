@@ -301,7 +301,7 @@
 
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
-        var texture = THREE.ImageUtils.loadTexture( '/images/building128.jpg' );
+        var texture = THREE.ImageUtils.loadTexture( getRandomBuildingTexture() );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
         // texture.anisotropy = renderer.getMaxAnisotropy();
@@ -322,10 +322,10 @@
 
 
         var buildingMesh = new THREE.Mesh(building,material);
-        buildingMesh.position.x	= getTileCoordinatesx(buildingNUM)*25;
-        buildingMesh.position.z	= getTileCoordinatesy(buildingNUM)*25;
+        buildingMesh.position.x	= getTileCoordinatesx(buildingNUM)*45;
+        buildingMesh.position.z	= getTileCoordinatesy(buildingNUM)*45;
         buildingNUM++;
-        buildingMesh.scale.x	= 15;
+        buildingMesh.scale.x	= 34;
         buildingMesh.scale.y	= y;
         buildingMesh.scale.z	= buildingMesh.scale.x;
 
@@ -351,6 +351,13 @@
 
         buildingMesh.isBuilding = true;
         return buildingMesh;
+    }
+
+    var getRandomBuildingTexture = function(){
+        var textureList = ['/images/building128.jpg', '/images/glass04.png',
+        '/images/glass05.png', '/images/BuildingsHighRise.jpg','/images/BuildingsHighRise2.jpg',
+        '/images/glass06.png', '/images/glass08.png'];
+        return textureList[Math.floor(Math.random() * 7)];
     }
 
     var createBillboard = function(y) {
@@ -673,7 +680,7 @@
 
                 if (INTERSECTED.isBuilding != null) {
                     INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                    INTERSECTED.material.emissive.setHex( 0xff0000 );
+                    INTERSECTED.material.emissive.setHex( 0xffff00 );
                     console.log(INTERSECTED);
                     $('#smell_count').text(INTERSECTED.smell_count);
                     $('#file_name').text(INTERSECTED.name);
