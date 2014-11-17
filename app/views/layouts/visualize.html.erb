@@ -218,7 +218,7 @@
 
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
-        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
+        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture128.jpg' );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
         texture.anisotropy = renderer.getMaxAnisotropy();
@@ -356,9 +356,9 @@
     //////////////////////////////////////////////////////////////////////////////////
     //		Camera Controls							//
     //////////////////////////////////////////////////////////////////////////////////
-    var controls	= new THREE.FirstPersonControls( camera );
-    controls.movementSpeed	= 100;
-    controls.lookSpeed	= 0.05;
+    var controls = new THREE.FirstPersonControls( camera );
+    controls.movementSpeed	= 500;
+    controls.lookSpeed	= 0.20;
     controls.lookVertical	= true;
     updateFcts.push(function(delta, now){
         controls.update( delta );
@@ -443,14 +443,23 @@
         if(event.keyCode==67) {
           if(camera.inOrthographicMode){
             camera.toPerspective();
-          }
-          else{
+            camera.position.y = 100
+            camera.position.x = -500
+            camera.position.z = 0
+          }else{
             camera.toOrthographic();
+            camera.position.y = 0;
+            camera.position.x = 0;
+            camera.position.z = 0;
           }
-
-          camera.position.y = 0;
-          camera.position.x = 0;
-          camera.position.z = 0;
+        }else if(event.keyCode==71) {
+            if(controls.movementSpeed == 500){
+                controls.movementSpeed = 0;
+                controls.lookSpeed = 0;
+            }else{
+                controls.movementSpeed = 500;
+                controls.lookSpeed = 0.20;
+            }
         }
     };
 
