@@ -449,9 +449,6 @@
             camera.position.z = 0
           }else{
             camera.toOrthographic();
-            controls = new THREE.OrbitControls( camera );
-            controls.damping = 0.2;
-            controls.addEventListener( 'change', render );
             camera.position.y = 0;
             camera.position.x = 0;
             camera.position.z = 0;
