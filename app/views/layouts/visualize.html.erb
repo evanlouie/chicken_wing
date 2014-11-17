@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 
 <!-- <script src='/js/three/three.min.js'></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
-
-<script src='/js/three/FirstPersonControls.js'></script>
-<!--<script src='threex.dynamictexture.js'></script>-->
-
-<script src='/js/three/CombinedCamera.js'></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
+<!-- <link href='http://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'> -->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src='/js/three/FirstPersonControls.js'></script>
+<script src='/js/three/CombinedCamera.js'></script>
+
+<!--<script src='threex.dynamictexture.js'></script>-->
+              <!-- skybox shaders -->
+        <script type="application/x-glsl" id="sky-vertex">
+        varying vec2 vUV;
+
+        void main() {
+          vUV = uv;
+          vec4 pos = vec4(position, 1.0);
+          gl_Position = projectionMatrix * modelViewMatrix * pos;
+        }
+        </script>
+
+        <script type="application/x-glsl" id="sky-fragment">
+        uniform sampler2D texture;
+        varying vec2 vUV;
+
+        void main() {
+          vec4 sample = texture2D(texture, vUV);
+          gl_FragColor = vec4(sample.xyz, sample.w);
+        }
+        </script>
+        <!-- /skybox shaders -->
 <style type="text/css">
-    body {
-        background:#d8e7ff;
+
+/*    body {
+        background:#61443e;
+        background-color: #efd1b5;
         color: #fff;
         padding:0;
         margin:0;
         overflow:hidden;
-        font-family: georgia;
+        font-family: 'Lato', sans-serif;
         font-size:1em;
         text-align: center;
-    }
+    }*/
     #info {
         position: absolute;
-        top: 10px; width: 100%;
+        bottom: 0px; width: 100%;
         padding: 5px;
-        text-align: center;
+        /*text-align: center;*/
         z-index:100;
+        color: white;
     }
 
     a {
@@ -40,14 +66,21 @@
 </style>
 
 <body>
-<div id="info">
-  Revision: <b id="p1">0</b>
+<div id="info" style="background: rgba(0,0,0,0.5);">
+  <strong>Revision:</strong> <div id="p1">0</div></br>
+  <strong>Name:</strong> <div id="file_name">NULL</div></br>
+  <strong>Lines:</strong> <div id="line_count">NULL</div></br>
+  <strong>Smells:</strong> <div id="smell_count">NULL</div>
+
 </div>
 <script>
 
     //ALL THE JSON STUFF
     var data = <%= @project.html_safe %>;
     var seed = 0x811c9dc5;
+    var wireframe = false; 
+    var mouse = new THREE.Vector2(), INTERSECTED;
+    var radius = 100, theta = 0;
 
     // MY HASHING FUNCTION
     function hashFnv32a(str, asString, seed) {
@@ -85,14 +118,18 @@
     var updateFcts	= [];
     var scene = new THREE.Scene(); // Create a Three.js scene object.
     //scene.fog	= new THREE.FogExp2( 0xd0e0f0, 0.001);
-    var camera = new THREE.CombinedCamera( window.innerWidth / 2, window.innerHeight / 2, 70, 1, 3000, - 1000, 3000 );
-    var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer(); // Fallback to canvas renderer, if necessary.
+    // scene.fog = new THREE.FogExp2( 0xefd1b5, 0.001 );
+    var camera	= new THREE.CombinedCamera(window.innerWidth/2, window.innerHeight/2, 70,1,3000,-1000,3000); // Define the perspective camera's attributes.
+    // var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer(); // Fallback to canvas renderer, if necessary.
+    var renderer = new THREE.WebGLRenderer();
+                renderer.setClearColor( 0xefd1b5 );
+                renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.setSize(window.innerWidth, window.innerHeight); // Set the size of the WebGL viewport.
     document.body.appendChild(renderer.domElement); // Append the WebGL viewport to the DOM.
     camera.position.y = 100
     camera.position.x = -500
     camera.position.z = 0
-    camera.setLens (50, 35)
+
 
     var light	= new THREE.HemisphereLight( 0xfffff0, 0x101020, 1.25 );
     light.position.set( 0.75, 1, 0.25 );
@@ -110,29 +147,71 @@
     var scCube = THREE.ImageUtils.loadTextureCube(sides);
     scCube.format = THREE.RGBFormat;
 
-    // prepare skybox material (shader)
-    var skyShader = THREE.ShaderLib["cube"];
-    skyShader.uniforms["tCube"].value = scCube;
-    var skyMaterial = new THREE.ShaderMaterial( {
-        fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
-        uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
-    });
+    // // prepare skybox material (shader)
+    // var skyShader = THREE.ShaderLib["cube"];
+    // skyShader.uniforms["tCube"].value = scCube;
+    // var skyMaterial = new THREE.ShaderMaterial( {
+    //     fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
+    //     uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
+    // });
 
-    // create Mesh with cube geometry and add to the scene
-    var skyBox = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000), skyMaterial);
-    skyMaterial.needsUpdate = true;
-    skyBox.position.y +=800;
-    scene.add(skyBox);
+    // // create Mesh with cube geometry and add to the scene
+    // var skyBox = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000), skyMaterial);
+    // skyMaterial.needsUpdate = true;
+    // skyBox.position.y +=800;
+    // scene.add(skyBox);
+
+    function drawSphericalSkybox() {
+        // prepare ShaderMaterial
+        var uniforms = {
+            texture: { type: 't', value: THREE.ImageUtils.loadTexture('/images/T_SkySphere_light.jpg') }
+        };
+        var skyMaterial = new THREE.ShaderMaterial( {
+            uniforms: uniforms,
+            vertexShader: document.getElementById('sky-vertex').textContent, fragmentShader: document.getElementById('sky-fragment').textContent
+        });
+
+        // create Mesh with sphere geometry and add to the scene
+        var skyBox = new THREE.Mesh(new THREE.SphereGeometry(1000, 100, 100), skyMaterial);
+        skyBox.material.side = THREE.DoubleSide
+        skyBox.scale.set(-1, 1, 1);
+        skyBox.eulerOrder = 'XZY';
+        skyBox.renderDepth = 500.0;
+
+        scene.add(skyBox);
+    }
+
+    // drawSphericalSkybox();
 
 
 
 
-    var planematerial	= new THREE.MeshBasicMaterial({ color: 0x000000 })
-    var planegeometry	= new THREE.CircleGeometry( 500, 500 )
+    var texture = THREE.ImageUtils.loadTexture('/images/mud.png');
+    texture.repeat.set(10,10);
+    // texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        // texture.repeat.set(64,64)
+
+
+    // var planematerial	= new THREE.MeshBasicMaterial({ map: texture})
+    var planematerial = new THREE.MeshLambertMaterial( { map: texture } )
+    var planegeometry	= new THREE.CircleGeometry( 10000, 10000)
     var plane	= new THREE.Mesh( planegeometry, planematerial );
     plane.rotation.x= - 90 * Math.PI / 180;
     plane.position.y += -200
     scene.add( plane );
+
+
+
+     // var building = new THREE.BoxGeometry( 1, 1, 1);
+     //    var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
+     //    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+     //    texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
+     //    // texture.anisotropy = renderer.getMaxAnisotropy();
+     //            var baseColor   = new THREE.Color().setRGB(1, color, color);
+
+     //    var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor } );
+     //    mesh = new THREE.Mesh( building, material );
+
 
 
     //intitialize the array with the buildings!
@@ -177,10 +256,11 @@
     }
 
     // build the mesh
-    var material	= new THREE.MeshLambertMaterial({
-        //map		: createTexture_window(1),
-        vertexColors	: THREE.VertexColors
-    });
+    // var material	= new THREE.MeshLambertMaterial({
+    //     //map		: createTexture_window(1),
+    //     vertexColors	: THREE.VertexColors,
+    //     wireframe: wireframe
+    // });
 
     function generateTextureCanvas(){
         // build a small canvas 32x64 and paint it in white
@@ -212,20 +292,28 @@
         // then draw the image
         context.drawImage( canvas, 0, 0, canvas2.width, canvas2.height );
         // return the just built canvas2
+        //canvas2.add(ground);
         return canvas2;
     }
 
 
+
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
-        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture128.jpg' );
+        var texture = THREE.ImageUtils.loadTexture( '/images/building128.jpg' );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
-        texture.anisotropy = renderer.getMaxAnisotropy();
+        // texture.anisotropy = renderer.getMaxAnisotropy();
                 var baseColor   = new THREE.Color().setRGB(1, color, color);
 
-        var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor } );
-        mesh = new THREE.Mesh( building, material );
+        var material = new THREE.MeshLambertMaterial({
+            //map       : createTexture_window(1),
+            map: texture,
+            // vertexColors    : THREE.VertexColors,
+            wireframe: wireframe,
+            color: baseColor,
+            // emissive: baseColor
+        });
 
 
         building.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
@@ -258,6 +346,9 @@
 
         buildingMesh.position.y -= 200;
 
+
+
+        buildingMesh.isBuilding = true;
         return buildingMesh;
     }
 
@@ -281,8 +372,6 @@
 
     var initialize = function () {
         // INITIALIZE THE CITY!!
-        document.addEventListener( 'keydown', onKeyDown, false );
-
         for( var i = 0; i < BIGArray[revisionID].length; i++ ){
             var y = BIGArray[revisionID][i].line_count;
             var color=0;
@@ -290,16 +379,21 @@
                 color = 1-BIGArray[revisionID][i].smell_count/BIGArray[revisionID][i].line_count;
             }
             var buildingMesh = createBuilding(y,color);
-            var billboard = createBillboard(y);
-
+            // var billboard = createBillboard(y);
+            buildingMesh.name = BIGArray[revisionID][i].trackable_name;
+            buildingMesh.line_count = BIGArray[revisionID][i].line_count;
+            buildingMesh.smell_count = BIGArray[revisionID][i].smell_count;
 
             ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = buildingMesh;
-            ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
+            // ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
             // add it to the scene
             scene.add(buildingMesh);
-            scene.add(billboard);
+            // scene.add(billboard);
         }
-        document.addEventListener("keydown", onKeyDown, false);
+        raycaster = new THREE.Raycaster();
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        window.addEventListener( 'resize', onWindowResize, false );
+        document.addEventListener('keydown', onKeyDown, false);
     };
 
     initialize();
@@ -323,14 +417,18 @@
                     color = 1-BIGArray[revisionID][i].smell_count/BIGArray[revisionID][i].line_count;
                 }
                 var buildingMesh = createBuilding(y,color);
-                var billboard = createBillboard(y);
+                buildingMesh.name = BIGArray[revisionID][i].trackable_name;
+                buildingMesh.line_count = BIGArray[revisionID][i].line_count;
+                buildingMesh.smell_count = BIGArray[revisionID][i].smell_count;
+
+                // var billboard = createBillboard(y);
 
                 // add building to list of buildings
                 ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = buildingMesh;
-                ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
+                // ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
                 // add it to the scene
                 scene.add(buildingMesh);
-                scene.add(billboard);
+                // scene.add(billboard);
             }
             // calculate the difference between current and last revision for line_count and smell_count
             var diff_lc = - (ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)].scale.y - BIGArray[revisionID][i].line_count) / TRACKER_MAX;
@@ -340,6 +438,27 @@
             buildingDifference[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = differences;
 
             // TODO: NEED TO REMOVE BUILDINGS THAT NO LONGER EXIST HERE:
+            // Object.keys(ListOfBuildings).forEach(function (key) { 
+            //     var stillexist = false
+            //     //do something here!
+            //     for (var z = 0; z < BIGArray[revisionID].length; z++){
+            //         if (hashFnv32a(BIGArray[revisionID][z].trackable_name,false,seed) == key){
+            //         // check if the name is the same
+            //             stillexist = true;
+            //         }
+            //     }
+                
+            //     if (stillexist == false){
+            //         //if it does not exist anymore, remove it from buildingDIfference, ListOfBuildings, and ListOfBillboards
+            //         buildingDifference[key].lc = 0
+            //         ListOfBuildings[key].scale.y = 0 // set height to 0 because city is now deleted
+            //         ListOfBillboards[key].scale.y = 0 // set billboard height to 0
+            //         ListOfBuildings[key].scale.x = 0 // set height to 0 because city is now deleted
+            //         ListOfBillboards[key].scale.x = 0 // set billboard height to 0
+            //     }
+            // })
+
+
 
         }
 
@@ -356,7 +475,7 @@
     //////////////////////////////////////////////////////////////////////////////////
     //		Camera Controls							//
     //////////////////////////////////////////////////////////////////////////////////
-    var controls = new THREE.FirstPersonControls( camera );
+    var controls	= new THREE.FirstPersonControls( camera );
     controls.movementSpeed	= 500;
     controls.lookSpeed	= 0.20;
     controls.lookVertical	= true;
@@ -368,6 +487,19 @@
     //		render the scene						//
     //////////////////////////////////////////////////////////////////////////////////
     updateFcts.push(function(){
+
+
+                // theta += 0.1;
+
+                // camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+                // camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+                // camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+                // camera.lookAt( scene.position );
+
+                // find intersections
+
+                
+
         renderer.render( scene, camera );
     })
 
@@ -390,7 +522,11 @@
                 for( var i = 0; i < BIGArray[revisionID].length; i++){
                     var key = hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed);
                     ListOfBuildings[key].scale.y += buildingDifference[key].lc; // update the height of ONLY the ones who are in this current revision!
-                    ListOfBillboards[key].position.y += buildingDifference[key].lc;
+
+                    ListOfBuildings[key].name = BIGArray[revisionID][i].trackable_name;
+                    ListOfBuildings[key].line_count = BIGArray[revisionID][i].line_count;
+                    ListOfBuildings[key].smell_count = BIGArray[revisionID][i].smell_count;
+                    // ListOfBillboards[key].position.y += buildingDifference[key].lc;
                     // update smell count color
                     var color=0;
                     if (BIGArray[revisionID][i].smell_count<BIGArray[revisionID][i].line_count){
@@ -400,18 +536,19 @@
                     var topColor	= baseColor.clone().multiply( light );
                     var bottomColor	= baseColor.clone().multiply( shadow );
 
-                    for ( var j = 0, jl = ListOfBuildings[key].geometry.faces.length; j < jl; j ++ ) {
-                        if ( j === 2 ) {
-                            // set face.vertexColors on root face
-                            ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
-                            ListOfBuildings[key].geometry.colorsNeedUpdate = true;
+                    ListOfBuildings[key].material.color = baseColor;
+                    // for ( var j = 0, jl = ListOfBuildings[key].geometry.faces.length; j < jl; j ++ ) {
+                    //     if ( j === 2 ) {
+                    //         // set face.vertexColors on root face
+                    //         ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
+                    //         ListOfBuildings[key].geometry.colorsNeedUpdate = true;
 
-                        } else {
-                            // set face.vertexColors on sides faces
-                            ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
-                            ListOfBuildings[key].geometry.colorsNeedUpdate = true;
-                        }
-                    }
+                    //     } else {
+                    //         // set face.vertexColors on sides faces
+                    //         ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
+                    //         ListOfBuildings[key].geometry.colorsNeedUpdate = true;
+                    //     }
+                    // }
 
                 }
                 tracker++;
@@ -424,6 +561,10 @@
             }
         }
 
+
+        intersect();
+
+
         requestAnimationFrame(animate);
         // measure time
         lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
@@ -433,11 +574,25 @@
         updateFcts.forEach(function(updateFn){
             updateFn(deltaMsec/1000, nowMsec/1000)
         })
-        //Make each Billboard face the camera
-        Object.keys(ListOfBillboards).forEach(function(key){
-            ListOfBillboards[key].lookAt(camera.position);
-        })
     })
+
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        event.preventDefault();
+
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    }
 
     function onKeyDown ( event ) {
         if(event.keyCode==67) {
@@ -462,6 +617,64 @@
             }
         }
     };
+
+    function updateInfo(object) {
+        if (object != null && object.isBuilding != null) {
+            $('#smell_count').text(INTERSECTED.smell_count);
+            $('#file_name').text(INTERSECTED.name);
+            $('#line_count').text(INTERSECTED.line_count);
+        } else {
+            $('#smell_count').text("null");
+            $('#file_name').text("null");
+            $('#line_count').text("null");
+
+        }
+        
+      
+    }
+
+    function intersect() {
+        var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+
+        raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+
+        var intersects = raycaster.intersectObjects( scene.children );
+
+        if ( intersects.length > 0 ) {
+
+            if ( INTERSECTED != intersects[ 0 ].object ) {
+
+                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+                INTERSECTED = intersects[ 0 ].object;
+
+                if (INTERSECTED.isBuilding != null) {
+                    INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                    INTERSECTED.material.emissive.setHex( 0xff0000 );
+                    console.log(INTERSECTED);
+                    $('#smell_count').text(INTERSECTED.smell_count);
+                    $('#file_name').text(INTERSECTED.name);
+                    $('#line_count').text(INTERSECTED.line_count);
+                } else {
+                    $('#smell_count').text("null");
+                    $('#file_name').text("null");
+                    $('#line_count').text("null");
+                }
+                
+
+            }
+
+        } else {
+
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+            INTERSECTED = null;
+            $('#smell_count').text("null");
+            $('#file_name').text("null");
+            $('#line_count').text("null");
+
+        }
+    }
 
 </script>
 </body>
