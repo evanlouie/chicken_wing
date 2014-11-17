@@ -357,13 +357,14 @@
     //////////////////////////////////////////////////////////////////////////////////
     //		Camera Controls							//
     //////////////////////////////////////////////////////////////////////////////////
-    var controls	= new THREE.FirstPersonControls( camera );
-    controls.movementSpeed	= 100;
-    controls.lookSpeed	= 0.05;
-    controls.lookVertical	= true;
+    var fpcontrols	= new THREE.FirstPersonControls( camera );
+    fpcontrols.movementSpeed	= 100;
+    fpcontrols.lookSpeed	= 0.05;
+    fpcontrols.lookVertical	= true;
     updateFcts.push(function(delta, now){
-        controls.update( delta );
+        fpcontrols.update( delta );
     })
+    var controls = fpcontrols;
 
     //////////////////////////////////////////////////////////////////////////////////
     //		render the scene						//
@@ -455,6 +456,12 @@
           camera.position.y = 0;
           camera.position.x = 0;
           camera.position.z = 0;
+        }else if(event.keyCode==70){
+            if(controls != null){
+                controls = null;
+            }else{
+                controls = fpcontrols;
+            }
         }
     };
 
