@@ -198,7 +198,7 @@
 
     var plane	= new THREE.Mesh( planegeometry, planematerial );
     plane.rotation.x= - 90 * Math.PI / 180;
-    plane.position.y += -200
+    plane.position.y += -210
     scene.add( plane );
 
 
@@ -513,6 +513,26 @@
     requestAnimationFrame(function animate(nowMsec){
         if (revisionID < BIGArray.length){
             if (tracker == TRACKER_MAX){
+                // TODO: NEED TO REMOVE BUILDINGS THAT NO LONGER EXIST HERE:
+            Object.keys(ListOfBuildings).forEach(function (key) { 
+                var stillexist = false
+                //do something here!
+                for (var z = 0; z < BIGArray[revisionID].length; z++){
+                    if (hashFnv32a(BIGArray[revisionID][z].trackable_name,false,seed) == key){
+                    // check if the name is the same
+                        stillexist = true;
+                    }
+                }
+                
+                if (stillexist == false){
+
+                    scene.remove(ListOfBuildings[key])
+                    var terrain = create_terrain(ListOfBuildings[key].position.x, ListOfBuildings[key].position.z)
+                    scene.add(terrain);
+
+                    delete ListOfBuildings[key]
+                }
+            })
                 revisionID++;
                 document.getElementById("p1").innerHTML = revisionID;
             }
@@ -523,6 +543,8 @@
                 for( var i = 0; i < BIGArray[revisionID].length; i++){
                     var key = hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed);
                     ListOfBuildings[key].scale.y += buildingDifference[key].lc; // update the height of ONLY the ones who are in this current revision!
+                    ListOfBuildings[key].material.map.repeat.set(1, (ListOfBuildings[key].scale.y / 40 > 0 ? ListOfBuildings[key].scale.y/40 : 1))
+
 
                     ListOfBuildings[key].name = BIGArray[revisionID][i].trackable_name;
                     ListOfBuildings[key].line_count = BIGArray[revisionID][i].line_count;
@@ -677,6 +699,7 @@
         }
     }
 
+    var terrain_texture   = THREE.ImageUtils.loadTexture('/images/rubble1.jpg');
     var create_terrain = function(x,z){
             var terrain_data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 40738, 40369, 39483, 37175, 34492, 32436, 31600, 33473, 0,
@@ -695,14 +718,13 @@
                 terrain_geo.vertices[i].z = terrain_data[i] *Math.random() / 65535 * 10 ;
             }
             
-            var terrain_texture   = THREE.ImageUtils.loadTexture('images/rubble1.jpg');
             //texture_new.wrapS = THREE.RepeatWrapping;
             //texture_new.wrapT = THREE.RepeatWrapping;
             //texture_new.repeat.set( 1, y_stack );
             //texture_new.needsUpdate = true;
             
             var terrain_material = new THREE.MeshPhongMaterial({
-                                                               map: terrain_texture,
+                                                               map: texture,
                                                                color: 0xdddddd,
                                                                wireframe: false
                                                                });
