@@ -445,8 +445,7 @@
         if(event.keyCode==67) {
           if(camera.inOrthographicMode){
             camera.toPerspective();
-          }
-          else{
+          }else{
             camera.toOrthographic();
             controls = new THREE.OrbitControls( camera );
             controls.damping = 0.2;
@@ -456,7 +455,7 @@
           camera.position.y = 0;
           camera.position.x = 0;
           camera.position.z = 0;
-        }else if(event.keyCode==70){
+        }else if(event.keyCode==71) {
             if(controls != null){
                 controls = null;
             }else{
