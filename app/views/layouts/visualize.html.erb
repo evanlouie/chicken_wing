@@ -651,7 +651,7 @@
             raycaster.set( vector, dir );
         }else if( camera instanceof(THREE.PerspectiveCamera)){
             vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-            intersects =  = raycaster.intersectObjects( scene.children );
+            intersects = raycaster.intersectObjects( scene.children );
 
 
             if ( intersects.length > 0 ) {
