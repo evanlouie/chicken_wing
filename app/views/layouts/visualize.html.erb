@@ -218,7 +218,7 @@
 
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
-        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
+        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture128.jpg' );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
         texture.anisotropy = renderer.getMaxAnisotropy();
