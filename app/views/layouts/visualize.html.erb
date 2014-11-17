@@ -300,7 +300,7 @@
 
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
-        var texture = THREE.ImageUtils.loadTexture( '/images/building128.jpg' );
+        var texture = THREE.ImageUtils.loadTexture( getRandomBuildingTexture() );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
         // texture.anisotropy = renderer.getMaxAnisotropy();
@@ -350,6 +350,13 @@
 
         buildingMesh.isBuilding = true;
         return buildingMesh;
+    }
+
+    var getRandomBuildingTexture = function(){
+        var textureList = ['/images/building128.jpg', '/images/glass04.png',
+        '/images/glass05.png', '/images/BuildingsHighRise.jpg','/images/BuildingsHighRise2.jpg',
+        '/images/glass06.png', '/images/glass08.png'];
+        return textureList[Math.floor(Math.random() * 7)];
     }
 
     var createBillboard = function(y) {
