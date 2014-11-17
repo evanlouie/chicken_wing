@@ -641,18 +641,18 @@
     }
 
     function intersect() {
-        var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-
-        raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
-
-        var intersects = raycaster.intersectObjects( scene.children );
-
+        var vector = new THREE.Vector3();
+        var dir = new THREE.Vector3();
+        var intersects;
         if ( camera instanceof THREE.OrthographicCamera ) {
             vector.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, - 1 ); // z = - 1 important!
             vector.unproject( camera );
             dir.set( 0, 0, - 1 ).transformDirection( camera.matrixWorld );
             raycaster.set( vector, dir );
-        }
+        }else if( camera instanceof(THREE.PerspectiveCamera)){
+            vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+            intersects =  = raycaster.intersectObjects( scene.children );
+
 
             if ( intersects.length > 0 ) {
 
@@ -688,7 +688,7 @@
                 $('#line_count').text("null");
 
             }
-            
+        }
     }
 
 </script>
