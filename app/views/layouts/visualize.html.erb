@@ -657,7 +657,7 @@
 
                 if (INTERSECTED.isBuilding != null) {
                     INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                    INTERSECTED.material.emissive.setHex( 0x00 );
+                    INTERSECTED.material.emissive.setHex( 0xffff00 );
                     console.log(INTERSECTED);
                     $('#smell_count').text(INTERSECTED.smell_count);
                     $('#file_name').text(INTERSECTED.name);
