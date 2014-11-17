@@ -3,7 +3,7 @@ class Project
   include Mongoid::Attributes::Dynamic
 
 
-  embeds_many :revisions
+  has_many :revisions
 
   field :git
   field :name
@@ -15,7 +15,9 @@ class Project
   validates :dir, presence: true
 
   before_validation :set_name, :set_dir
-  before_save :clone_repo
+  # before_save :clone_repo
+  after_save :clone_repo
+
   before_destroy :del_dir
 
   protected
@@ -68,21 +70,29 @@ class Project
         # smells = with_captured_stdout { RuboCop::CLI.new.run(["--format", "json", "--output", file_loc, t_dir]) }
         RuboCop::CLI.new.run(["--format", "json", "--out", file_loc, t_dir])
         json = JSON.parse(IO.read(file_loc))
-        rev = self.revisions.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid, dir: t_dir, smells: Hash[json["files"].collect { |file| [file["path"], file["offenses"].length]}], file_count: Dir[File.join(t_dir, '**', '*')].count { |file| File.file?(file) }})
+        rev = self.revisions.new({time: c.time, epoch_time: c.epoch_time, commit_id: c.oid, dir: t_dir, smells: Hash[json["files"].collect { |file| [file["path"], file["offenses"].length] }], file_count: Dir[File.join(t_dir, '**', '*')].count { |file| File.file?(file) }})
 
         root = Dir.pwd
         Dir.glob(t_dir+"/**/*") do |file|
           if File.file?(file)
+            smell_count = 0
+            if File.extname(file) == ".js"
+              smell_count = (`jslint #{file}`).scan(/Lint at/).size
+            else
+              smell_count = rev.smells[file] || 0
+            end
             count = %x{sed -n '=' #{file} | wc -l}.to_i # System call for line count -> much faster than ruby
-            rev.items.new({name: file, trackable_name: file.match(/#{c.oid.to_s}\/.*/)[0].gsub(c.oid.to_s, ''), line_count: count, smell_count: rev.smells[file] || 0})
+            rev.items.new({name: file, trackable_name: file.match(/#{c.oid.to_s}\/.*/)[0].gsub(c.oid.to_s, ''), line_count: count, smell_count: smell_count})
           end
         end
+        rev.save
       }
+
       repo.reset(c.oid, :hard)
     end
     walker.reset
     threads.each { |thr| thr.join }
-    self.largest_revision_file_count = self.revisions.map{ |r| r.file_count }.sort.last
+    self.largest_revision_file_count = self.revisions.map { |r| r.file_count }.sort.last
     FileUtils.rm_rf(tmp_dir)
   end
 

@@ -39,3 +39,4 @@ gem 'spring',        group: :development
 gem 'mongoid'
 gem 'rugged'
 gem 'rubocop'
+gem 'jslint'
