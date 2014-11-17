@@ -6,10 +6,31 @@
 <script src='/js/three/FirstPersonControls.js'></script>
 <!--<script src='threex.dynamictexture.js'></script>-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+              <!-- skybox shaders -->
+        <script type="application/x-glsl" id="sky-vertex">
+        varying vec2 vUV;
 
+        void main() {
+          vUV = uv;
+          vec4 pos = vec4(position, 1.0);
+          gl_Position = projectionMatrix * modelViewMatrix * pos;
+        }
+        </script>
+
+        <script type="application/x-glsl" id="sky-fragment">
+        uniform sampler2D texture;
+        varying vec2 vUV;
+
+        void main() {
+          vec4 sample = texture2D(texture, vUV);
+          gl_FragColor = vec4(sample.xyz, sample.w);
+        }
+        </script>
+        <!-- /skybox shaders -->
 <style type="text/css">
     body {
-        background:#d8e7ff;
+        background:#61443e;
+        background-color: #efd1b5;
         color: #fff;
         padding:0;
         margin:0;
@@ -46,6 +67,7 @@
     //ALL THE JSON STUFF
     var data = <%= @project.html_safe %>;
     var seed = 0x811c9dc5;
+    var wireframe = false; 
 
     // MY HASHING FUNCTION
     function hashFnv32a(str, asString, seed) {
@@ -83,8 +105,12 @@
     var updateFcts	= [];
     var scene = new THREE.Scene(); // Create a Three.js scene object.
     //scene.fog	= new THREE.FogExp2( 0xd0e0f0, 0.001);
-    var camera	= new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.01, 3000) // Define the perspective camera's attributes.
-    var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer(); // Fallback to canvas renderer, if necessary.
+    // scene.fog = new THREE.FogExp2( 0xefd1b5, 0.001 );
+    var camera	= new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 9001) // Define the perspective camera's attributes.
+    // var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer(); // Fallback to canvas renderer, if necessary.
+    var renderer = new THREE.WebGLRenderer();
+                renderer.setClearColor( 0xefd1b5 );
+                renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.setSize(window.innerWidth, window.innerHeight); // Set the size of the WebGL viewport.
     document.body.appendChild(renderer.domElement); // Append the WebGL viewport to the DOM.
     camera.position.y = 100
@@ -108,29 +134,70 @@
     var scCube = THREE.ImageUtils.loadTextureCube(sides);
     scCube.format = THREE.RGBFormat;
 
-    // prepare skybox material (shader)
-    var skyShader = THREE.ShaderLib["cube"];
-    skyShader.uniforms["tCube"].value = scCube;
-    var skyMaterial = new THREE.ShaderMaterial( {
-        fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
-        uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
-    });
+    // // prepare skybox material (shader)
+    // var skyShader = THREE.ShaderLib["cube"];
+    // skyShader.uniforms["tCube"].value = scCube;
+    // var skyMaterial = new THREE.ShaderMaterial( {
+    //     fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
+    //     uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
+    // });
 
-    // create Mesh with cube geometry and add to the scene
-    var skyBox = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000), skyMaterial);
-    skyMaterial.needsUpdate = true;
-    skyBox.position.y +=800;
-    scene.add(skyBox);
+    // // create Mesh with cube geometry and add to the scene
+    // var skyBox = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000), skyMaterial);
+    // skyMaterial.needsUpdate = true;
+    // skyBox.position.y +=800;
+    // scene.add(skyBox);
+
+    function drawSphericalSkybox() {
+        // prepare ShaderMaterial
+        var uniforms = {
+            texture: { type: 't', value: THREE.ImageUtils.loadTexture('/images/T_SkySphere_light.jpg') }
+        };
+        var skyMaterial = new THREE.ShaderMaterial( {
+            uniforms: uniforms,
+            vertexShader: document.getElementById('sky-vertex').textContent, fragmentShader: document.getElementById('sky-fragment').textContent
+        });
+
+        // create Mesh with sphere geometry and add to the scene
+        var skyBox = new THREE.Mesh(new THREE.SphereGeometry(1000, 100, 100), skyMaterial);
+        skyBox.material.side = THREE.DoubleSide
+        skyBox.scale.set(-1, 1, 1);
+        skyBox.eulerOrder = 'XZY';
+        skyBox.renderDepth = 500.0;
+
+        scene.add(skyBox);
+    }
+
+    // drawSphericalSkybox();
 
 
 
 
-    var planematerial	= new THREE.MeshBasicMaterial({ color: 0x000000 })
-    var planegeometry	= new THREE.CircleGeometry( 500, 500 )
+    var texture = THREE.ImageUtils.loadTexture('/images/mud.png');
+    texture.repeat.set(10,10);
+    // texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        // texture.repeat.set(64,64)
+
+
+    var planematerial	= new THREE.MeshBasicMaterial({ map: texture)
+    var planegeometry	= new THREE.CircleGeometry( 10000, 10000)
     var plane	= new THREE.Mesh( planegeometry, planematerial );
     plane.rotation.x= - 90 * Math.PI / 180;
     plane.position.y += -200
     scene.add( plane );
+
+
+
+     // var building = new THREE.BoxGeometry( 1, 1, 1);
+     //    var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
+     //    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+     //    texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
+     //    // texture.anisotropy = renderer.getMaxAnisotropy();
+     //            var baseColor   = new THREE.Color().setRGB(1, color, color);
+
+     //    var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor } );
+     //    mesh = new THREE.Mesh( building, material );
+
 
 
     //intitialize the array with the buildings!
@@ -210,8 +277,10 @@
         // then draw the image
         context.drawImage( canvas, 0, 0, canvas2.width, canvas2.height );
         // return the just built canvas2
+        //canvas2.add(ground);
         return canvas2;
     }
+
 
 
     var createBuilding = function (y,color) {
@@ -219,10 +288,10 @@
         var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
-        texture.anisotropy = renderer.getMaxAnisotropy();
+        // texture.anisotropy = renderer.getMaxAnisotropy();
                 var baseColor   = new THREE.Color().setRGB(1, color, color);
 
-        var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor } );
+        var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor, wireframe: wireframe} );
         mesh = new THREE.Mesh( building, material );
 
 
@@ -336,6 +405,27 @@
             buildingDifference[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = differences;
 
             // TODO: NEED TO REMOVE BUILDINGS THAT NO LONGER EXIST HERE:
+            // Object.keys(ListOfBuildings).forEach(function (key) { 
+            //     var stillexist = false
+            //     //do something here!
+            //     for (var z = 0; z < BIGArray[revisionID].length; z++){
+            //         if (hashFnv32a(BIGArray[revisionID][z].trackable_name,false,seed) == key){
+            //         // check if the name is the same
+            //             stillexist = true;
+            //         }
+            //     }
+                
+            //     if (stillexist == false){
+            //         //if it does not exist anymore, remove it from buildingDIfference, ListOfBuildings, and ListOfBillboards
+            //         buildingDifference[key].lc = 0
+            //         ListOfBuildings[key].scale.y = 0 // set height to 0 because city is now deleted
+            //         ListOfBillboards[key].scale.y = 0 // set billboard height to 0
+            //         ListOfBuildings[key].scale.x = 0 // set height to 0 because city is now deleted
+            //         ListOfBillboards[key].scale.x = 0 // set billboard height to 0
+            //     }
+            // })
+
+
 
         }
 
@@ -353,8 +443,8 @@
     //		Camera Controls							//
     //////////////////////////////////////////////////////////////////////////////////
     var controls	= new THREE.FirstPersonControls( camera );
-    controls.movementSpeed	= 100;
-    controls.lookSpeed	= 0.05;
+    controls.movementSpeed	= 500;
+    controls.lookSpeed	= 0.20;
     controls.lookVertical	= true;
     updateFcts.push(function(delta, now){
         controls.update( delta );
@@ -428,10 +518,6 @@
         // call each update function
         updateFcts.forEach(function(updateFn){
             updateFn(deltaMsec/1000, nowMsec/1000)
-        })
-        //Make each Billboard face the camera
-        Object.keys(ListOfBillboards).forEach(function(key){
-            ListOfBillboards[key].lookAt(camera.position);
         })
     })
 
