@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 
 <!-- <script src='/js/three/three.min.js'></script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
 <!-- <link href='http://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'> -->
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src='/js/three/FirstPersonControls.js'></script>
+<script src='/js/three/CombinedCamera.js'></script>
+
 <!--<script src='threex.dynamictexture.js'></script>-->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
               <!-- skybox shaders -->
         <script type="application/x-glsl" id="sky-vertex">
         varying vec2 vUV;
@@ -116,7 +119,7 @@
     var scene = new THREE.Scene(); // Create a Three.js scene object.
     //scene.fog	= new THREE.FogExp2( 0xd0e0f0, 0.001);
     // scene.fog = new THREE.FogExp2( 0xefd1b5, 0.001 );
-    var camera	= new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 9001) // Define the perspective camera's attributes.
+    var camera	= new THREE.CombinedCamera(window.innerWidth/2, window.innerHeight/2, 70,1,3000,-1000,3000); // Define the perspective camera's attributes.
     // var renderer = window.WebGLRenderingContext ? new THREE.WebGLRenderer() : new THREE.CanvasRenderer(); // Fallback to canvas renderer, if necessary.
     var renderer = new THREE.WebGLRenderer();
                 renderer.setClearColor( 0xefd1b5 );
@@ -390,6 +393,7 @@
         raycaster = new THREE.Raycaster();
         document.addEventListener( 'mousemove', onDocumentMouseMove, false );
         window.addEventListener( 'resize', onWindowResize, false );
+        document.addEventListener('keydown', onKeyDown, false);
     };
 
     initialize();
@@ -413,6 +417,10 @@
                     color = 1-BIGArray[revisionID][i].smell_count/BIGArray[revisionID][i].line_count;
                 }
                 var buildingMesh = createBuilding(y,color);
+                buildingMesh.name = BIGArray[revisionID][i].trackable_name;
+                buildingMesh.line_count = BIGArray[revisionID][i].line_count;
+                buildingMesh.smell_count = BIGArray[revisionID][i].smell_count;
+
                 // var billboard = createBillboard(y);
 
                 // add building to list of buildings
@@ -490,46 +498,7 @@
 
                 // find intersections
 
-                var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-
-                raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
-
-                var intersects = raycaster.intersectObjects( scene.children );
-
-                if ( intersects.length > 0 ) {
-
-                    if ( INTERSECTED != intersects[ 0 ].object ) {
-
-                        if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-
-                        INTERSECTED = intersects[ 0 ].object;
-
-                        if (INTERSECTED.isBuilding != null) {
-                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                            INTERSECTED.material.emissive.setHex( 0xff0000 );
-                            console.log(INTERSECTED);
-                            $('#smell_count').text(INTERSECTED.smell_count);
-                            $('#file_name').text(INTERSECTED.name);
-                            $('#line_count').text(INTERSECTED.line_count);
-                        } else {
-                            $('#smell_count').text("null");
-                            $('#file_name').text("null");
-                            $('#line_count').text("null");
-                        }
-                        
-
-                    }
-
-                } else {
-
-                    if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-
-                    INTERSECTED = null;
-                    $('#smell_count').text("null");
-                    $('#file_name').text("null");
-                    $('#line_count').text("null");
-
-                }
+                
 
         renderer.render( scene, camera );
     })
@@ -553,6 +522,10 @@
                 for( var i = 0; i < BIGArray[revisionID].length; i++){
                     var key = hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed);
                     ListOfBuildings[key].scale.y += buildingDifference[key].lc; // update the height of ONLY the ones who are in this current revision!
+
+                    ListOfBuildings[key].name = BIGArray[revisionID][i].trackable_name;
+                    ListOfBuildings[key].line_count = BIGArray[revisionID][i].line_count;
+                    ListOfBuildings[key].smell_count = BIGArray[revisionID][i].smell_count;
                     // ListOfBillboards[key].position.y += buildingDifference[key].lc;
                     // update smell count color
                     var color=0;
@@ -563,18 +536,19 @@
                     var topColor	= baseColor.clone().multiply( light );
                     var bottomColor	= baseColor.clone().multiply( shadow );
 
-                    for ( var j = 0, jl = ListOfBuildings[key].geometry.faces.length; j < jl; j ++ ) {
-                        if ( j === 2 ) {
-                            // set face.vertexColors on root face
-                            ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
-                            ListOfBuildings[key].geometry.colorsNeedUpdate = true;
+                    ListOfBuildings[key].material.color = baseColor;
+                    // for ( var j = 0, jl = ListOfBuildings[key].geometry.faces.length; j < jl; j ++ ) {
+                    //     if ( j === 2 ) {
+                    //         // set face.vertexColors on root face
+                    //         ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
+                    //         ListOfBuildings[key].geometry.colorsNeedUpdate = true;
 
-                        } else {
-                            // set face.vertexColors on sides faces
-                            ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
-                            ListOfBuildings[key].geometry.colorsNeedUpdate = true;
-                        }
-                    }
+                    //     } else {
+                    //         // set face.vertexColors on sides faces
+                    //         ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
+                    //         ListOfBuildings[key].geometry.colorsNeedUpdate = true;
+                    //     }
+                    // }
 
                 }
                 tracker++;
@@ -586,6 +560,10 @@
                 }
             }
         }
+
+
+        intersect();
+
 
         requestAnimationFrame(animate);
         // measure time
@@ -614,6 +592,88 @@
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
+    }
+
+    function onKeyDown ( event ) {
+        if(event.keyCode==67) {
+          if(camera.inOrthographicMode){
+            camera.toPerspective();
+            camera.position.y = 100
+            camera.position.x = -500
+            camera.position.z = 0
+          }else{
+            camera.toOrthographic();
+            camera.position.y = 0;
+            camera.position.x = 0;
+            camera.position.z = 0;
+          }
+        }else if(event.keyCode==71) {
+            if(controls.movementSpeed == 500){
+                controls.movementSpeed = 0;
+                controls.lookSpeed = 0;
+            }else{
+                controls.movementSpeed = 500;
+                controls.lookSpeed = 0.20;
+            }
+        }
+    };
+
+    function updateInfo(object) {
+        if (object != null && object.isBuilding != null) {
+            $('#smell_count').text(INTERSECTED.smell_count);
+            $('#file_name').text(INTERSECTED.name);
+            $('#line_count').text(INTERSECTED.line_count);
+        } else {
+            $('#smell_count').text("null");
+            $('#file_name').text("null");
+            $('#line_count').text("null");
+
+        }
+        
+      
+    }
+
+    function intersect() {
+        var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+
+        raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+
+        var intersects = raycaster.intersectObjects( scene.children );
+
+        if ( intersects.length > 0 ) {
+
+            if ( INTERSECTED != intersects[ 0 ].object ) {
+
+                if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+                INTERSECTED = intersects[ 0 ].object;
+
+                if (INTERSECTED.isBuilding != null) {
+                    INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                    INTERSECTED.material.emissive.setHex( 0xff0000 );
+                    console.log(INTERSECTED);
+                    $('#smell_count').text(INTERSECTED.smell_count);
+                    $('#file_name').text(INTERSECTED.name);
+                    $('#line_count').text(INTERSECTED.line_count);
+                } else {
+                    $('#smell_count').text("null");
+                    $('#file_name').text("null");
+                    $('#line_count').text("null");
+                }
+                
+
+            }
+
+        } else {
+
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+            INTERSECTED = null;
+            $('#smell_count').text("null");
+            $('#file_name').text("null");
+            $('#line_count').text("null");
+
+        }
     }
 
 </script>
