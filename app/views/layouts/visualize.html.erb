@@ -2,7 +2,9 @@
 
 <!-- <script src='/js/three/three.min.js'></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
-
+<!-- <link href='http://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'> -->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src='/js/three/FirstPersonControls.js'></script>
 <!--<script src='threex.dynamictexture.js'></script>-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -28,23 +30,25 @@
         </script>
         <!-- /skybox shaders -->
 <style type="text/css">
-    body {
+
+/*    body {
         background:#61443e;
         background-color: #efd1b5;
         color: #fff;
         padding:0;
         margin:0;
         overflow:hidden;
-        font-family: georgia;
+        font-family: 'Lato', sans-serif;
         font-size:1em;
         text-align: center;
-    }
+    }*/
     #info {
         position: absolute;
-        top: 10px; width: 100%;
+        bottom: 0px; width: 100%;
         padding: 5px;
-        text-align: center;
+        /*text-align: center;*/
         z-index:100;
+        color: white;
     }
 
     a {
@@ -59,8 +63,12 @@
 </style>
 
 <body>
-<div id="info">
-  Revision: <b id="p1">0</b>
+<div id="info" style="background: rgba(0,0,0,0.5);">
+  <strong>Revision:</strong> <div id="p1">0</div></br>
+  <strong>Name:</strong> <div id="file_name">NULL</div></br>
+  <strong>Lines:</strong> <div id="line_count">NULL</div></br>
+  <strong>Smells:</strong> <div id="smell_count">NULL</div>
+
 </div>
 <script>
 
@@ -68,6 +76,8 @@
     var data = <%= @project.html_safe %>;
     var seed = 0x811c9dc5;
     var wireframe = false; 
+    var mouse = new THREE.Vector2(), INTERSECTED;
+    var radius = 100, theta = 0;
 
     // MY HASHING FUNCTION
     function hashFnv32a(str, asString, seed) {
@@ -179,7 +189,8 @@
         // texture.repeat.set(64,64)
 
 
-    var planematerial	= new THREE.MeshBasicMaterial({ map: texture)
+    // var planematerial	= new THREE.MeshBasicMaterial({ map: texture})
+    var planematerial = new THREE.MeshLambertMaterial( { map: texture } )
     var planegeometry	= new THREE.CircleGeometry( 10000, 10000)
     var plane	= new THREE.Mesh( planegeometry, planematerial );
     plane.rotation.x= - 90 * Math.PI / 180;
@@ -242,10 +253,11 @@
     }
 
     // build the mesh
-    var material	= new THREE.MeshLambertMaterial({
-        //map		: createTexture_window(1),
-        vertexColors	: THREE.VertexColors
-    });
+    // var material	= new THREE.MeshLambertMaterial({
+    //     //map		: createTexture_window(1),
+    //     vertexColors	: THREE.VertexColors,
+    //     wireframe: wireframe
+    // });
 
     function generateTextureCanvas(){
         // build a small canvas 32x64 and paint it in white
@@ -285,14 +297,20 @@
 
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
-        var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
+        var texture = THREE.ImageUtils.loadTexture( '/images/building128.jpg' );
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
         // texture.anisotropy = renderer.getMaxAnisotropy();
                 var baseColor   = new THREE.Color().setRGB(1, color, color);
 
-        var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor, wireframe: wireframe} );
-        mesh = new THREE.Mesh( building, material );
+        var material = new THREE.MeshLambertMaterial({
+            //map       : createTexture_window(1),
+            map: texture,
+            // vertexColors    : THREE.VertexColors,
+            wireframe: wireframe,
+            color: baseColor,
+            // emissive: baseColor
+        });
 
 
         building.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
@@ -325,6 +343,9 @@
 
         buildingMesh.position.y -= 200;
 
+
+
+        buildingMesh.isBuilding = true;
         return buildingMesh;
     }
 
@@ -355,16 +376,20 @@
                 color = 1-BIGArray[revisionID][i].smell_count/BIGArray[revisionID][i].line_count;
             }
             var buildingMesh = createBuilding(y,color);
-            var billboard = createBillboard(y);
-
+            // var billboard = createBillboard(y);
+            buildingMesh.name = BIGArray[revisionID][i].trackable_name;
+            buildingMesh.line_count = BIGArray[revisionID][i].line_count;
+            buildingMesh.smell_count = BIGArray[revisionID][i].smell_count;
 
             ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = buildingMesh;
-            ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
+            // ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
             // add it to the scene
             scene.add(buildingMesh);
-            scene.add(billboard);
+            // scene.add(billboard);
         }
-
+        raycaster = new THREE.Raycaster();
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        window.addEventListener( 'resize', onWindowResize, false );
     };
 
     initialize();
@@ -388,14 +413,14 @@
                     color = 1-BIGArray[revisionID][i].smell_count/BIGArray[revisionID][i].line_count;
                 }
                 var buildingMesh = createBuilding(y,color);
-                var billboard = createBillboard(y);
+                // var billboard = createBillboard(y);
 
                 // add building to list of buildings
                 ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = buildingMesh;
-                ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
+                // ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
                 // add it to the scene
                 scene.add(buildingMesh);
-                scene.add(billboard);
+                // scene.add(billboard);
             }
             // calculate the difference between current and last revision for line_count and smell_count
             var diff_lc = - (ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)].scale.y - BIGArray[revisionID][i].line_count) / TRACKER_MAX;
@@ -454,6 +479,58 @@
     //		render the scene						//
     //////////////////////////////////////////////////////////////////////////////////
     updateFcts.push(function(){
+
+
+                // theta += 0.1;
+
+                // camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+                // camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+                // camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+                // camera.lookAt( scene.position );
+
+                // find intersections
+
+                var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
+
+                raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
+
+                var intersects = raycaster.intersectObjects( scene.children );
+
+                if ( intersects.length > 0 ) {
+
+                    if ( INTERSECTED != intersects[ 0 ].object ) {
+
+                        if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+                        INTERSECTED = intersects[ 0 ].object;
+
+                        if (INTERSECTED.isBuilding != null) {
+                            INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                            INTERSECTED.material.emissive.setHex( 0xff0000 );
+                            console.log(INTERSECTED);
+                            $('#smell_count').text(INTERSECTED.smell_count);
+                            $('#file_name').text(INTERSECTED.name);
+                            $('#line_count').text(INTERSECTED.line_count);
+                        } else {
+                            $('#smell_count').text("null");
+                            $('#file_name').text("null");
+                            $('#line_count').text("null");
+                        }
+                        
+
+                    }
+
+                } else {
+
+                    if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+                    INTERSECTED = null;
+                    $('#smell_count').text("null");
+                    $('#file_name').text("null");
+                    $('#line_count').text("null");
+
+                }
+
         renderer.render( scene, camera );
     })
 
@@ -476,7 +553,7 @@
                 for( var i = 0; i < BIGArray[revisionID].length; i++){
                     var key = hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed);
                     ListOfBuildings[key].scale.y += buildingDifference[key].lc; // update the height of ONLY the ones who are in this current revision!
-                    ListOfBillboards[key].position.y += buildingDifference[key].lc;
+                    // ListOfBillboards[key].position.y += buildingDifference[key].lc;
                     // update smell count color
                     var color=0;
                     if (BIGArray[revisionID][i].smell_count<BIGArray[revisionID][i].line_count){
@@ -520,6 +597,24 @@
             updateFn(deltaMsec/1000, nowMsec/1000)
         })
     })
+
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        event.preventDefault();
+
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    }
 
 </script>
 </body>
