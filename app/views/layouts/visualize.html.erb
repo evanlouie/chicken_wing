@@ -641,53 +641,45 @@
     }
 
     function intersect() {
-        var vector = new THREE.Vector3();
-        var dir = new THREE.Vector3();
-        var intersects;
-        if ( camera instanceof THREE.OrthographicCamera ) {
-            vector.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, - 1 ); // z = - 1 important!
-            vector.unproject( camera );
-            dir.set( 0, 0, - 1 ).transformDirection( camera.matrixWorld );
-            raycaster.set( vector, dir );
-        }else if( camera instanceof(THREE.PerspectiveCamera)){
-            vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
-            intersects = raycaster.intersectObjects( scene.children );
+        var vector = new THREE.Vector3( mouse.x, mouse.y, 1 ).unproject( camera );
 
+        raycaster.set( camera.position, vector.sub( camera.position ).normalize() );
 
-            if ( intersects.length > 0 ) {
+        var intersects = raycaster.intersectObjects( scene.children );
 
-                if ( INTERSECTED != intersects[ 0 ].object ) {
+        if ( intersects.length > 0 ) {
 
-                    if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-
-                    INTERSECTED = intersects[ 0 ].object;
-
-                    if (INTERSECTED.isBuilding != null) {
-                        INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                        INTERSECTED.material.emissive.setHex( 0xffff00 );
-                        console.log(INTERSECTED);
-                        $('#smell_count').text(INTERSECTED.smell_count);
-                        $('#file_name').text(INTERSECTED.name);
-                        $('#line_count').text(INTERSECTED.line_count);
-                    } else {
-                        $('#smell_count').text("null");
-                        $('#file_name').text("null");
-                        $('#line_count').text("null");
-                    }
-                    
-
-                }
-
-            } else {
+            if ( INTERSECTED != intersects[ 0 ].object ) {
 
                 if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
-                INTERSECTED = null;
-                $('#smell_count').text("null");
-                $('#file_name').text("null");
-                $('#line_count').text("null");
+                INTERSECTED = intersects[ 0 ].object;
+
+                if (INTERSECTED.isBuilding != null) {
+                    INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+                    INTERSECTED.material.emissive.setHex( 0xffff00 );
+                    console.log(INTERSECTED);
+                    $('#smell_count').text(INTERSECTED.smell_count);
+                    $('#file_name').text(INTERSECTED.name);
+                    $('#line_count').text(INTERSECTED.line_count);
+                } else {
+                    $('#smell_count').text("null");
+                    $('#file_name').text("null");
+                    $('#line_count').text("null");
+                }
+                
 
             }
+
+        } else {
+
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+
+            INTERSECTED = null;
+            $('#smell_count').text("null");
+            $('#file_name').text("null");
+            $('#line_count').text("null");
+
         }
     }
 
