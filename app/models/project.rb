@@ -78,6 +78,8 @@ class Project
             smell_count = 0
             if File.extname(file) == ".js"
               smell_count = (`jslint #{file}`).scan(/Lint at/).size
+            elsif File.extname(file) ==".erb"
+              smell_count = (`jslint #{file}`).scan(/Lint at/).size + rev.smells[file]
             else
               smell_count = rev.smells[file] || 0
             end
