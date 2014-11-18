@@ -136,32 +136,7 @@
     scene.add( light );
 
 
-    // define path and box sides images
-    //var path = 'skybox/';
-    //var sides = [ path + '1.jpg', path + '2.jpg', path + '3.jpg', path + '4.jpg', path + '5.jpg', path + '6.jpg' ];
-
-    var path = '/images/ely_darkcity/';
-    var sides = [ path + 'darkcity_ft.jpg', path + 'darkcity_bk.jpg', path + 'darkcity_up.jpg', path + 'darkcity_dn.jpg', path + 'darkcity_rt.jpg', path + 'darkcity_lf.jpg' ];
-
-    // load images
-    var scCube = THREE.ImageUtils.loadTextureCube(sides);
-    scCube.format = THREE.RGBFormat;
-
-    // // prepare skybox material (shader)
-    // var skyShader = THREE.ShaderLib["cube"];
-    // skyShader.uniforms["tCube"].value = scCube;
-    // var skyMaterial = new THREE.ShaderMaterial( {
-    //     fragmentShader: skyShader.fragmentShader, vertexShader: skyShader.vertexShader,
-    //     uniforms: skyShader.uniforms, depthWrite: false, side: THREE.BackSide
-    // });
-
-    // // create Mesh with cube geometry and add to the scene
-    // var skyBox = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000), skyMaterial);
-    // skyMaterial.needsUpdate = true;
-    // skyBox.position.y +=800;
-    // scene.add(skyBox);
-
-    function drawSphericalSkybox() {
+    // create skybox here // removed the function containing it to make skyBox globally accessible
         // prepare ShaderMaterial
         var uniforms = {
             texture: { type: 't', value: THREE.ImageUtils.loadTexture('/images/eso_dark.jpg') }
@@ -178,41 +153,19 @@
         skyBox.renderDepth = 500.0;
 
         scene.add(skyBox);
-    }
-
-    drawSphericalSkybox();
 
 
 
-
+    // texture for the plane
     var texture = THREE.ImageUtils.loadTexture('/images/moon.jpg');
-    // texture.repeat.set(128,128);
-    // texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        // texture.repeat.set(64,64)
 
-
-    // var planematerial	= new THREE.MeshBasicMaterial({ map: texture})
     var planematerial = new THREE.MeshLambertMaterial( { map: texture } )
     var planegeometry	= new THREE.CircleGeometry( 10000, 10000)
-    // var planegeometry = new THREE.Mesh(new THREE.SphereGeometry(10000, 100, 100), planematerial);
 
     var plane	= new THREE.Mesh( planegeometry, planematerial );
     plane.rotation.x= - 90 * Math.PI / 180;
     plane.position.y += -210
     scene.add( plane );
-
-
-
-     // var building = new THREE.BoxGeometry( 1, 1, 1);
-     //    var texture = THREE.ImageUtils.loadTexture( '/images/building-texture1.jpg' );
-     //    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-     //    texture.repeat.set(1, (y / 40 > 0 ? y/40 : 1))
-     //    // texture.anisotropy = renderer.getMaxAnisotropy();
-     //            var baseColor   = new THREE.Color().setRGB(1, color, color);
-
-     //    var material = new THREE.MeshBasicMaterial( { map: texture, color: baseColor } );
-     //    mesh = new THREE.Mesh( building, material );
-
 
 
     //intitialize the array with the buildings!
@@ -237,31 +190,10 @@
     building.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
 
 
-    // base colors for vertexColors. light is for vertices at the top, shaddow is for the ones at the bottom
+    // base colors for vertexColors. light is for vertices at the top, shadow is for the ones at the bottom
     var light	= new THREE.Color( 0xffffff )
     var shadow	= new THREE.Color( 0x303050 )
 
-    // generate the texture
-    //	var texture		= new THREE.Texture( generateTextureCanvas() );
-    //	texture.anisotropy	= renderer.getMaxAnisotropy();
-    //	texture.needsUpdate	= true;
-
-    // generate a second texture
-    var createTexture_window = function(y_stack){
-        var texture_new   = THREE.ImageUtils.loadTexture('HighRise.jpg');
-        texture_new.wrapS = THREE.RepeatWrapping;
-        texture_new.wrapT = THREE.RepeatWrapping;
-        texture_new.repeat.set( 1, y_stack );
-        texture_new.needsUpdate = true;
-        return texture_new;
-    }
-
-    // build the mesh
-    // var material	= new THREE.MeshLambertMaterial({
-    //     //map		: createTexture_window(1),
-    //     vertexColors	: THREE.VertexColors,
-    //     wireframe: wireframe
-    // });
 
     function generateTextureCanvas(){
         // build a small canvas 32x64 and paint it in white
@@ -298,7 +230,6 @@
     }
 
 
-
     var createBuilding = function (y,color) {
         var building = new THREE.BoxGeometry( 1, 1, 1);
         var texture = THREE.ImageUtils.loadTexture( getRandomBuildingTexture() );
@@ -308,9 +239,7 @@
                 var baseColor   = new THREE.Color().setRGB(1, color, color);
 
         var material = new THREE.MeshLambertMaterial({
-            //map       : createTexture_window(1),
             map: texture,
-            // vertexColors    : THREE.VertexColors,
             wireframe: wireframe,
             color: baseColor,
             // emissive: baseColor
@@ -336,8 +265,6 @@
         for ( var j = 0, jl = buildingMesh.geometry.faces.length; j < jl; j ++ ) {
             if ( j === 2 ) {
                 buildingMesh.geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
-                //buildingMesh.material.map = createTexture_window(Math.floor(y/10));
-                //buildingMesh.material.needsUpdate = true;
             } else {
                 // set face.vertexColors on sides faces
                 buildingMesh.geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
@@ -348,11 +275,11 @@
         buildingMesh.position.y -= 200;
 
 
-
         buildingMesh.isBuilding = true;
         return buildingMesh;
     }
 
+    //this is the random building texture generator
     var getRandomBuildingTexture = function(){
         var textureList = ['/images/building128.jpg', '/images/glass04.png',
         '/images/glass05.png', '/images/BuildingsHighRise.jpg','/images/BuildingsHighRise2.jpg',
@@ -360,23 +287,7 @@
         return textureList[Math.floor(Math.random() * 7)];
     }
 
-    var createBillboard = function(y) {
-        var billboard = new THREE.BoxGeometry(1,1,1);
-        billboard.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0.5, 0 ) );
 
-
-        var billboardMesh = new THREE.Mesh(billboard,material);
-        billboardMesh.position.x  = getTileCoordinatesx(buildingNUM - 1)*25;
-        billboardMesh.position.z  = getTileCoordinatesy(buildingNUM - 1)*25;
-        billboardMesh.position.y = y;
-        billboardMesh.scale.x = 15;
-        billboardMesh.scale.y = 10;
-        billboardMesh.scale.z = 2;
-
-        billboardMesh.position.y -= 200;
-
-        return billboardMesh;
-    }
 
     var initialize = function () {
         // INITIALIZE THE CITY!!
@@ -387,16 +298,13 @@
                 color = 1-BIGArray[revisionID][i].smell_count/BIGArray[revisionID][i].line_count;
             }
             var buildingMesh = createBuilding(y,color);
-            // var billboard = createBillboard(y);
             buildingMesh.name = BIGArray[revisionID][i].trackable_name;
             buildingMesh.line_count = BIGArray[revisionID][i].line_count;
             buildingMesh.smell_count = BIGArray[revisionID][i].smell_count;
 
             ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = buildingMesh;
-            // ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
             // add it to the scene
             scene.add(buildingMesh);
-            // scene.add(billboard);
         }
         raycaster = new THREE.Raycaster();
         document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -428,15 +336,10 @@
                 buildingMesh.name = BIGArray[revisionID][i].trackable_name;
                 buildingMesh.line_count = BIGArray[revisionID][i].line_count;
                 buildingMesh.smell_count = BIGArray[revisionID][i].smell_count;
-
-                // var billboard = createBillboard(y);
-
                 // add building to list of buildings
                 ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = buildingMesh;
-                // ListOfBillboards[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = billboard;
                 // add it to the scene
                 scene.add(buildingMesh);
-                // scene.add(billboard);
             }
             // calculate the difference between current and last revision for line_count and smell_count
             var diff_lc = - (ListOfBuildings[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)].scale.y - BIGArray[revisionID][i].line_count) / TRACKER_MAX;
@@ -445,39 +348,12 @@
             var differences = {lc: diff_lc, sc: new_sc, hashval: hashval_};
             buildingDifference[hashFnv32a(BIGArray[revisionID][i].trackable_name,false,seed)] = differences;
 
-            // TODO: NEED TO REMOVE BUILDINGS THAT NO LONGER EXIST HERE:
-            // Object.keys(ListOfBuildings).forEach(function (key) { 
-            //     var stillexist = false
-            //     //do something here!
-            //     for (var z = 0; z < BIGArray[revisionID].length; z++){
-            //         if (hashFnv32a(BIGArray[revisionID][z].trackable_name,false,seed) == key){
-            //         // check if the name is the same
-            //             stillexist = true;
-            //         }
-            //     }
-                
-            //     if (stillexist == false){
-            //         //if it does not exist anymore, remove it from buildingDIfference, ListOfBuildings, and ListOfBillboards
-            //         buildingDifference[key].lc = 0
-            //         ListOfBuildings[key].scale.y = 0 // set height to 0 because city is now deleted
-            //         ListOfBillboards[key].scale.y = 0 // set billboard height to 0
-            //         ListOfBuildings[key].scale.x = 0 // set height to 0 because city is now deleted
-            //         ListOfBillboards[key].scale.x = 0 // set billboard height to 0
-            //     }
-            // })
-
-
-
         }
 
     }
 
     // to keep track of the 10 iterations
     var tracker = TRACKER_MAX;
-
-
-    //renderer.render(scene,camera);
-
 
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -495,19 +371,6 @@
     //		render the scene						//
     //////////////////////////////////////////////////////////////////////////////////
     updateFcts.push(function(){
-
-
-                // theta += 0.1;
-
-                // camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
-                // camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
-                // camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
-                // camera.lookAt( scene.position );
-
-                // find intersections
-
-                
-
         renderer.render( scene, camera );
     })
 
@@ -518,9 +381,11 @@
     var TRACKER_MAX = 25;
 
     requestAnimationFrame(function animate(nowMsec){
+        skyBox.rotation.y += 0.0025
+        skyBox.rotation.z += 0.005
         if (revisionID < BIGArray.length){
             if (tracker == TRACKER_MAX){
-                // TODO: NEED TO REMOVE BUILDINGS THAT NO LONGER EXIST HERE:
+                // REMOVE BUILDINGS THAT NO LONGER EXIST HERE and creates "terrain" in place of it
             Object.keys(ListOfBuildings).forEach(function (key) { 
                 var stillexist = false
                 //do something here!
@@ -556,7 +421,7 @@
                     ListOfBuildings[key].name = BIGArray[revisionID][i].trackable_name;
                     ListOfBuildings[key].line_count = BIGArray[revisionID][i].line_count;
                     ListOfBuildings[key].smell_count = BIGArray[revisionID][i].smell_count;
-                    // ListOfBillboards[key].position.y += buildingDifference[key].lc;
+
                     // update smell count color
                     var color=0;
                     if (BIGArray[revisionID][i].smell_count<BIGArray[revisionID][i].line_count){
@@ -567,18 +432,6 @@
                     var bottomColor	= baseColor.clone().multiply( shadow );
 
                     ListOfBuildings[key].material.color = baseColor;
-                    // for ( var j = 0, jl = ListOfBuildings[key].geometry.faces.length; j < jl; j ++ ) {
-                    //     if ( j === 2 ) {
-                    //         // set face.vertexColors on root face
-                    //         ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ baseColor, baseColor, baseColor, baseColor ];
-                    //         ListOfBuildings[key].geometry.colorsNeedUpdate = true;
-
-                    //     } else {
-                    //         // set face.vertexColors on sides faces
-                    //         ListOfBuildings[key].geometry.faces[ j ].vertexColors = [ topColor, bottomColor, bottomColor, topColor ];
-                    //         ListOfBuildings[key].geometry.colorsNeedUpdate = true;
-                    //     }
-                    // }
 
                 }
                 tracker++;
@@ -725,11 +578,7 @@
                 terrain_geo.vertices[i].z = terrain_data[i] *Math.random() / 65535 * 10 ;
             }
             
-            //texture_new.wrapS = THREE.RepeatWrapping;
-            //texture_new.wrapT = THREE.RepeatWrapping;
-            //texture_new.repeat.set( 1, y_stack );
-            //texture_new.needsUpdate = true;
-            
+
             var terrain_material = new THREE.MeshPhongMaterial({
                                                                map: texture,
                                                                color: 0xdddddd,
