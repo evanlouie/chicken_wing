@@ -625,27 +625,44 @@
     }
 
     function onKeyDown ( event ) {
-        if(event.keyCode==67) {
-          if(camera.inOrthographicMode){
-            camera.toPerspective();
-            camera.position.y = 100
-            camera.position.x = -500
-            camera.position.z = 0
-          }else{
-            camera.toOrthographic();
-            camera.position.y = 0;
-            camera.position.x = 0;
-            camera.position.z = 0;
-          }
-        }else if(event.keyCode==71) {
-            if(controls.movementSpeed == 500){
-                controls.movementSpeed = 0;
-                controls.lookSpeed = 0;
-            }else{
-                controls.movementSpeed = 500;
-                controls.lookSpeed = 0.20;
-            }
+
+        switch(event.keyCode){
+            case 67: 
+                if(camera.inOrthographicMode){
+                    camera.toPerspective();
+                    camera.position.y = 100
+                    camera.position.x = -500
+                    camera.position.z = 0
+                }else{
+                    camera.toOrthographic();
+                    camera.position.y = 0;
+                    camera.position.x = 0;
+                    camera.position.z = 0;
+                }
+                break;
+            case 71:
+                if(controls.movementSpeed == 500){
+                    controls.movementSpeed = 0;
+                    controls.lookSpeed = 0;
+                }else{
+                    controls.movementSpeed = 500;
+                    controls.lookSpeed = 0.20;
+                }
+                break;
+            case 49:
+                camera.setZoom(1);
+                break;
+            case 50:
+                camera.setZoom(2);
+                break;
+            case 51:
+                camera.setZoom(3);
+                break;
+            case 52:
+                camera.setZoom(4);
+                break;
         }
+
     };
 
     function updateInfo(object) {
