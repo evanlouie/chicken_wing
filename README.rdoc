@@ -1,28 +1,27 @@
-== README
+= Project chicken_wing
+Project chicken_wing is a 3D visualization of a city's growth over time/commit/revision based off the analysis of a Ruby project code and its Git repository. This project is group ACE.J's CPSC 410 project.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+== How to Run
+1. Install Ruby 2.1.3 p242
+2. Install Rails 4.1.6
+3. Install MongoDB
+4. Run command, “rails server”
+5. Open browser localhost:3000
 
-Things you may want to cover:
+== Controls
+* G - freeze camera
+* C - change camera type
+* 1 ~ 4 - zoom level
+* W-A-S-D with mouse - movement
 
-* Ruby version
+== Legend
+* city = github repository
+* building = file
+* building height = lines of code
+* redness of building = smelliness of file
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+== Members
+* <b>A</b>llen Tsai
+* <b>C</b>indy Tang
+* <b>E</b>van Louie
+* <b>J</b>eff Chan
