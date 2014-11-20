@@ -19,6 +19,7 @@ Project chicken_wing is a 3D visualization of a city's growth over time/commit/r
 * building = file
 * building height = lines of code
 * redness of building = smelliness of file
+* rubble on ground = deleted files
 
 == Members
 * <b>A</b>llen Tsai
