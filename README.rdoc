@@ -26,3 +26,12 @@ Project chicken_wing is a 3D visualization of a city's growth over time/commit/r
 * <b>C</b>indy Tang
 * <b>E</b>van Louie
 * <b>J</b>eff Chan
+
+== Credit
+* for finding x and y coordinates of buildings : http://jsfiddle.net/9RGYH/35/
+* help with building a procedural city : http://learningthreejs.com/blog/2013/08/02/how-to-do-a-procedural-city-in-100lines/
+* textures for buildings : SIMCITY building textures
+* ruby commit/revision analysis : https://github.com/libgit2/rugged
+* javascript analysis : https://github.com/douglascrockford/JSLint
+* code smell analysis : https://github.com/bbatsov/rubocop
+
